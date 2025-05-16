@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋 - 登录/注册</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="main-container" id="mainContainer">
+    <div class="panel welcome-panel">
+        <h2>WELCOME</h2>
+        <p>JOIN US!</p>
+        <img src="image/login.png" class="avatar" id="avatarImg" />
+    </div>
+    <div class="panel form-panel">
+        <form class="form login-form" id="loginForm">
+            <h2>登录</h2>
+            <!-- 用户名输入框 -->
+            <div style="position: relative; width: 100%; height: 48px; margin-bottom: 16px;">
+                <input type="text"
+                       id="username"
+                       placeholder="用户名"
+                       required
+                       autocomplete="current-username"
+                       style="width: 100%; height: 100%; box-sizing: border-box; padding-right: 40px;">
+            </div>
+            <!-- 密码输入框 -->
+            <div style="position: relative; width: 100%; height: 48px; margin-bottom: 16px;">
+                <input type="password"
+                       id="password"
+                       placeholder="密码"
+                       required
+                       autocomplete="current-password"
+                       style="width: 100%; height: 100%; box-sizing: border-box; padding-right: 40px;">
+                <span id="togglePassword"
+                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 22px; user-select: none;">
+                      👁️
+                </span>
+            </div>
+            <button type="button" id="submit">登录</button>
+            <span class="switch" id="toRegister">没有账号？去注册</span>
+        </form>
+
+        <form class="form register-form" id="registerForm">
+            <h2>注册</h2>
+            <!-- 用户名输入框 -->
+            <div style="position: relative; width: 100%; height: 48px; margin-bottom: 16px;">
+                <input type="text"
+                       id="reg-username"
+                       placeholder="用户名"
+                       required
+                       autocomplete="username"
+                       style="width: 100%; height: 100%; box-sizing: border-box; padding-right: 40px;">
+            </div>
+            <!-- 密码输入框 -->
+            <div style="position: relative; width: 100%; height: 48px; margin-bottom: 16px;">
+                <input type="password"
+                       id="reg-password"
+                       placeholder="密码"
+                       required
+                       autocomplete="new-password"
+                       style="width: 100%; height: 100%; box-sizing: border-box; padding-right: 40px;">
+                <span id="toggleRegPassword"
+                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 22px; user-select: none;">
+                      👁️
+                </span>
+            </div>
+            <!-- 确认密码输入框 -->
+            <div style="position: relative; width: 100%; height: 48px; margin-bottom: 16px;">
+                <input type="password"
+                       id="reg-confirm-password"
+                       placeholder="确认密码"
+                       required
+                       autocomplete="new-password"
+                       style="width: 100%; height: 100%; box-sizing: border-box; padding-right: 40px;">
+                <span id="toggleRegConfirmPassword"
+                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 22px; user-select: none;">
+                      👁️
+                </span>
+            </div>
+            <button type="button" id="reg-submit">注册</button>
+            <span class="switch" id="toLogin">已有账号？去登录</span>
+        </form>
+    </div>
+</div>
+<script src="./js/script1.js"></script>
+<script src="./js/jquery-3.7.1.min.js"></script>
+<script>
+    //登录
+    let usernameInput = document.querySelector("#username");
+    let passwordInput = document.querySelector("#password");
+    let submitButton = document.querySelector("#submit");
+    submitButton.onclick = function() {
+        $.ajax({
+            type: 'post',
+            url: '/login',
+            data: {
+                username: usernameInput.value,
+                password: passwordInput.value,
+            },
+            success: function(body) {
+                console.log("登录响应:", body);
+                if(body != null && body.userId > 0) {
+                    alert("登录成功!");
+                    location.assign("/game_hall.html");
+                } else {
+                    alert("登录失败!");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("登录请求失败:", error);
+                alert("登录失败!");
+            }
+        });
+    }
+
+    //注册
+    //1.获取表单元素
+    document.addEventListener('DOMContentLoaded', function() {
+        let regUsernameInput = document.querySelector("#reg-username");
+        let regPasswordInput = document.querySelector("#reg-password");
+        let regConfirmPasswordInput = document.querySelector("#reg-confirm-password");
+        let regSubmitButton = document.querySelector("#reg-submit");
+
+        //2.注册按钮点击事件
+        regSubmitButton.onclick = function () {
+            console.log("ok");
+            //3.表单验证
+            if (!regUsernameInput.value || !regPasswordInput.value) {
+                alert("用户名和密码不能为空!");
+                return;
+            }
+            if (regPasswordInput.value !== regConfirmPasswordInput.value) {
+                alert("两次输入的密码不一致!");
+                return;
+            }
+            //4.发送注册请求
+            $.ajax({
+                type: 'post',
+                url: '/register',
+                data: {
+                    username: regUsernameInput.value,
+                    password: regPasswordInput.value,
+                },
+                success: function (body) {
+                    console.log("注册响应:", body);
+                    if (body && body.username) {
+                        alert("注册成功!");
+                        location.assign("/login.html");
+                    } else {
+                        alert("注册失败!用户名可能已存在");
+                    }
+                },
+                error: function () {
+                    alert("注册失败!");
+                }
+            });
+        }
+    });
+    let togglePassword = document.getElementById('togglePassword');
+    togglePassword.onclick = function() {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.textContent = '🙈'; // 切换图标
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.textContent = '👁️';
+        }
+    };
+    let regPasswordInput = document.getElementById('reg-password');
+    let toggleRegPassword = document.getElementById('toggleRegPassword');
+    let regConfirmPasswordInput = document.getElementById('reg-confirm-password');
+    let toggleRegConfirmPassword = document.getElementById('toggleRegConfirmPassword');
+
+    toggleRegPassword.onclick = function() {
+        if (regPasswordInput.type === 'password') {
+            regPasswordInput.type = 'text';
+            toggleRegPassword.textContent = '🙈';
+        } else {
+            regPasswordInput.type = 'password';
+            toggleRegPassword.textContent = '👁️';
+        }
+    };
+    toggleRegConfirmPassword.onclick = function() {
+        if (regConfirmPasswordInput.type === 'password') {
+            regConfirmPasswordInput.type = 'text';
+            toggleRegConfirmPassword.textContent = '🙈';
+        } else {
+            regConfirmPasswordInput.type = 'password';
+            toggleRegConfirmPassword.textContent = '👁️';
+        }
+    };
+</script>
+</body>
+</html>

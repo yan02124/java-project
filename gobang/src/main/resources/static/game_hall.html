@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋对战大厅</title>
+<!--    <link rel="stylesheet" href="css/common.css">-->
+    <link rel="stylesheet" href="css/game_hall.css">
+</head>
+<body>
+    <div class="center-card">
+        <h2 class="main-title">五子棋对战大厅</h2>
+        <div class="online-info">
+            大厅在线人数(不包括对局中玩家)：<span id="onlineCount"></span>
+        </div>
+        <hr>
+        <div class="player-info">
+            <img src="image/gobang.png" class="avatar-spin player-avatar">
+            <div class="player-data" id="screen">
+                <div><span class="player-label">玩家：</span><b id="playerName" class="player-value"></b></div>
+                <div><span class="player-label">分数：</span><b id="playerScore" class="player-value"></b></div>
+                <div><span class="player-label">比赛场次：</span><b id="playerGames" class="player-value"></b></div>
+                <div><span class="player-label">获胜场数：</span><b id="playerWins" class="player-value"></b></div>
+            </div>
+        </div>
+        <div id="match-button" style="cursor:pointer; background:#e0f5d8; text-align:center; padding:14px 0; border-radius:8px; font-size:20px; font-weight:bold; color:#4a6fa5; margin-top:16px;">
+            开始匹配
+        </div>
+    </div>
+    <!-- 排行榜弹窗 -->
+    <div id="rank-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="modal-close" id="close-rank">&times;</span>
+            <div class="modal-title">玩家排行榜</div>
+            <div class="rank-list" id="rank-list">
+                <!-- JS动态填充 -->
+            </div>
+        </div>
+    </div>
+    <!-- 排行榜按钮 -->
+    <button class="rank-btn" id="show-rank">排行榜</button>
+<!--    ======================-->
+<!--    <div class="nav">五子棋对战</div>-->
+<!--    &lt;!&ndash; 整个页面的容器元素 &ndash;&gt;-->
+<!--    <div class="container">-->
+<!--        &lt;!&ndash; 这个 div 在container 中是处于垂直水平居中这样的位置的 &ndash;&gt;-->
+<!--        <div>-->
+<!--            &lt;!&ndash; 展示用户信息 &ndash;&gt;-->
+<!--            <div id="screen"></div>-->
+<!--                &lt;!&ndash; 匹配按钮 &ndash;&gt;-->
+<!--            <div id="match-button">开始匹配</div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $.ajax({
+            type: 'get',
+            url: '/userInfo',
+            success: function(body) {
+                document.getElementById('playerName').textContent = body.username;
+                document.getElementById('playerScore').textContent = body.score;
+                document.getElementById('playerGames').textContent = body.totalCount;
+                document.getElementById('playerWins').textContent = body.winCount;
+                // let screenDiv = document.querySelector("#screen");
+                // screenDiv.innerHTML = '玩家：' + body.username + " 分数：" +body.score
+                //     + "<br> 比赛场次：" + body.totalCount + " 获胜场数：" + body.winCount
+            },
+            error: function() {
+                alert("获取用户信息失败!");
+            }
+        });
+
+        //此处进行初始化 websocket，并且实现前端的匹配逻辑.
+        //此处的路径必须写作 /findMatch, 千万不要写作 /findMatch/
+        let websocketUrl = 'ws://' + location.host + '/findMatch';
+        let websocket = new WebSocket(websocketUrl);
+        websocket.onopen = function() {
+            console.log("onopen");
+        }
+        websocket.onclose = function() {
+            console.log("onclose");
+        }
+        websocket.onerror = function() {
+            console.log("onerror");
+        }
+        //监听页面关闭事件,在页面关闭之前，手动调用这里的 websocket 的 close 方法.
+        window.onbeforeunload = function() {
+            websocket.close();
+        }
+        //处理服务器返回的响应
+        websocket.onmessage = function(e) {
+            console.log(e.data);
+            //处理服务器返回的响应,这个响应就是针对“开始匹配” / “结束匹配” 来对应的
+            //解析得到的响应对象,返回的数据是一个 JSON 字符串,解析成 js 对象
+            let resp = JSON.parse(e.data);
+            let matchButton = document.querySelector('#match-button');
+            if(!resp.ok) {
+                console.log("游戏大厅中接收到了失败响应!" + resp.reason);
+                return;
+            }
+            if(resp.message == 'startMatch'){
+                //开始匹配请求发送成功
+                console.log("进入匹配队列成功!");
+                matchButton.innerHTML = '匹配中...(点击停止)' 
+            }else if(resp.message == 'stopMatch'){
+                //结束匹配请求发送成功
+                console.log("离开匹配队列成功!");
+                matchButton.innerHTML = '开始匹配';
+            }else if(resp.message == 'matchSuccess'){
+                //已经匹配到对手了.
+                console.log("匹配到对手! 进入游戏房间!");
+                //location.assign("/game_room.html");
+                location.replace("/game_room.html");
+            }else if(resp.message == 'repeatConnection'){
+                //防多开的效果,然后在这个逻辑中加入了 alert 和跳转
+                //如果多开了,服务器就会主动关闭 websocket 连接,导致客户端跳转到 login 页面
+                //alert("当前和服务器的连接已经断开!请重新登录!");
+                alert("当前检测到多开!请使用其他账号登录!");
+                location.replace("/login.html");
+            }else{
+                console.log("收到了非法的响应! message= " + resp.message);
+            }
+        } 
+
+        //给匹配按钮添加一个点击事件
+        let matchButton = document.querySelector('#match-button');
+        matchButton.onclick = function() {
+            console.log("按钮被点击");
+            //在触发 websocket 请求之前,先确认下 websocket 连接是否好着呢~~
+            if(websocket.readyState == websocket.OPEN) {
+                //如果当前 readyState 处在 OPEN 状态,说明连接好着的~
+                //这里发送的数据有两种可能，开始匹配/停止匹配~
+                if(matchButton.innerText.trim() == '开始匹配'){
+                    console.log("开始匹配");
+                    websocket.send(JSON.stringify({
+                        message: 'startMatch',
+                    }));
+                }else if(matchButton.innerText.trim() == '匹配中...(点击停止)'){
+                    console.log("停止匹配");
+                    websocket.send(JSON.stringify({
+                        message: 'stopMatch',
+                    }));
+                }
+            }else{
+                //这是说明连接当前是异常的状态
+                alert("当前您的连接已经断开!请重新登录!");
+                location.replace('/login.html');
+            }
+        }
+    </script>
+    <script>
+        function updateOnlineCount() {
+            $.get('/onlineCount', function(data) {
+                $('#onlineCount').text(data.count);
+            });
+        }
+        updateOnlineCount(); // 页面加载时先获取一次
+        setInterval(updateOnlineCount, 500); // 每5ms刷新一次
+    </script>
+<script>
+    // 打开排行榜弹窗
+    document.getElementById('show-rank').onclick = function() {
+        document.getElementById('rank-modal').style.display = 'flex';
+        // 获取排行榜数据
+        $.get('/rankList', function(data) {
+            let html = '';
+            data.forEach(function(item, idx) {
+                let numClass = "rank-num";
+                if(idx === 0) numClass += " top1";
+                else if(idx === 1) numClass += " top2";
+                else if(idx === 2) numClass += " top3";
+                html += `
+                <div class="rank-item">
+                    <div class="${numClass}">${idx+1}</div>
+                    <div class="rank-info">
+                        <div class="rank-username">${item.username}</div>
+                        <div class="rank-detail">分数：${item.score}　胜率：${item.winRate}</div>
+                    </div>
+                </div>
+            `;
+            });
+            document.getElementById('rank-list').innerHTML = html;
+        });
+    };
+    // 关闭弹窗
+    document.getElementById('close-rank').onclick = function() {
+        document.getElementById('rank-modal').style.display = 'none';
+    };
+</script>
+
+</body>
+
+</html>
