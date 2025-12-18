@@ -3,48 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2025大机司机线上考试题库（全文本完整版）</title>
+    <title>2025大机司机考试（随机+错题+重刷版）</title>
     <style>
         :root {
             --primary: #2563EB;
             --success: #16A34A;
             --error: #DC2626;
-            --bg: #F1F5F9;
+            --bg: #F8FAFC;
             --card: #FFFFFF;
             --text: #1E293B;
+            --warn: #F59E0B;
         }
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; }
         
         /* 顶部导航 */
-        .header { background: var(--card); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); z-index: 10; flex-shrink: 0; }
-        .header h1 { font-size: 16px; font-weight: 700; margin: 0; color: #0F172A; }
-        .progress { background: #EFF6FF; color: var(--primary); padding: 4px 12px; border-radius: 16px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .header { background: var(--card); padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); z-index: 10; flex-shrink: 0; }
         
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .progress { font-size: 14px; font-weight: 600; color: #64748B; cursor: pointer; background: #F1F5F9; padding: 4px 10px; border-radius: 12px; }
+
+        /* 功能按钮区 */
+        .toolbar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+        .tool-btn { 
+            font-size: 13px; padding: 6px 12px; border-radius: 20px; 
+            border: 1px solid #E2E8F0; background: white; color: #475569; 
+            cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .tool-btn.active-mistake { background: var(--error); color: white; border-color: var(--error); }
+        .tool-btn.active-random { background: var(--warn); color: white; border-color: var(--warn); }
+        .tool-btn:active { transform: scale(0.95); }
+
         /* 题目区域 */
         .main { flex: 1; overflow-y: auto; padding: 16px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 700px; }
         
-        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
         
-        .meta { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-        .tag { padding: 4px 8px; border-radius: 4px; color: white; font-size: 12px; font-weight: bold; }
+        .meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .tag-group { display: flex; gap: 8px; align-items: center; }
+        .tag { padding: 4px 8px; border-radius: 6px; color: white; font-size: 12px; font-weight: bold; }
         .tag.single { background: var(--primary); }
         .tag.multi { background: #9333EA; }
         .tag.judge { background: #EA580C; }
-        .q-id { color: #64748B; font-size: 14px; }
         
-        .question { font-size: 17px; line-height: 1.6; font-weight: 600; margin-bottom: 24px; text-align: justify; white-space: pre-wrap; }
+        .q-id { color: #94A3B8; font-size: 13px; }
+        
+        .question { font-size: 18px; line-height: 1.6; font-weight: 600; margin-bottom: 24px; text-align: justify; color: #334155; }
         
         /* 选项列表 */
         .options { display: flex; flex-direction: column; gap: 12px; }
-        .opt { display: flex; align-items: flex-start; padding: 14px; border: 1.5px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fff; }
-        .opt:active { background: #F8FAFC; }
+        .opt { display: flex; align-items: flex-start; padding: 16px; border: 2px solid #E2E8F0; border-radius: 12px; cursor: pointer; transition: all 0.1s; background: #fff; position: relative; }
+        .opt:active { transform: scale(0.99); }
         
-        .opt-key { width: 28px; height: 28px; border-radius: 50%; background: #F1F5F9; color: #64748B; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; margin-right: 12px; flex-shrink: 0; border: 1px solid #CBD5E1; }
-        .opt-text { font-size: 15px; line-height: 1.5; padding-top: 2px; }
+        .opt-key { width: 30px; height: 30px; border-radius: 50%; background: #F1F5F9; color: #64748B; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; margin-right: 14px; flex-shrink: 0; border: 1px solid #CBD5E1; }
+        .opt-text { font-size: 16px; line-height: 1.5; padding-top: 3px; color: #475569; }
 
         /* 状态样式 */
-        .opt.correct { background: #F0FDF4; border-color: var(--success); }
+        .opt.correct { background: #ECFDF5; border-color: var(--success); }
         .opt.correct .opt-key { background: var(--success); color: white; border-color: var(--success); }
         
         .opt.wrong { background: #FEF2F2; border-color: var(--error); }
@@ -54,55 +70,84 @@
         .opt.selected .opt-key { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* 底部解析和按钮 */
-        .analysis { margin-top: 20px; padding: 16px; background: #F8FAFC; border-radius: 8px; border-left: 4px solid var(--primary); display: none; }
-        .analysis.show { display: block; animation: slideDown 0.3s; }
+        .analysis { margin-top: 24px; padding: 16px; background: #F8FAFC; border-radius: 12px; border-left: 5px solid var(--primary); display: none; animation: fadeIn 0.3s; }
+        .analysis.error-mode { border-color: var(--error); background: #FEF2F2; }
         
-        .btn-submit { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 20px; display: none; cursor: pointer; }
+        .btn-submit { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 24px; display: none; cursor: pointer; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); }
 
         /* 底部导航栏 */
-        .footer { background: var(--card); padding: 12px 16px; border-top: 1px solid #E2E8F0; display: flex; gap: 12px; flex-shrink: 0; }
-        .nav-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; }
+        .footer { background: var(--card); padding: 12px 20px; border-top: 1px solid #E2E8F0; display: flex; gap: 16px; flex-shrink: 0; }
+        .nav-btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
         .prev { background: #F1F5F9; color: #475569; }
-        .next { background: var(--primary); color: white; }
+        .next { background: #DBEAFE; color: var(--primary); }
+        .next:active { background: var(--primary); color: white; }
 
         /* 答题卡弹窗 */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; }
-        .modal-content { position: absolute; bottom: 0; left: 0; width: 100%; background: white; border-radius: 16px 16px 0 0; padding: 20px; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 10px; margin-top: 15px; }
-        .grid-item { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #F1F5F9; color: #64748B; font-weight: 600; font-size: 13px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; backdrop-filter: blur(2px); }
+        .modal-content { position: absolute; bottom: 0; left: 0; width: 100%; background: white; border-radius: 24px 24px 0 0; padding: 24px; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; animation: slideUp 0.3s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 10px; margin-top: 20px; }
+        .grid-item { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #F1F5F9; color: #64748B; font-weight: 600; font-size: 14px; cursor: pointer; }
         .grid-item.ok { background: var(--success); color: white; }
         .grid-item.err { background: var(--error); color: white; }
-        .grid-item.curr { outline: 2px solid var(--primary); outline-offset: 2px; }
+        .grid-item.curr { border: 2px solid var(--primary); background: white; color: var(--primary); }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        /* 空状态 */
+        .empty-state { text-align: center; margin-top: 100px; color: #64748B; }
+        .empty-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>大机司机考试题库(完整版)</h1>
-    <div class="progress" onclick="toggleSheet()">
-        <span id="curNum">1</span>/<span id="totalNum">208</span> ☰
+    <div class="top-row">
+        <h2 style="margin:0;font-size:16px;">大机考试题库</h2>
+        <div class="progress" onclick="toggleSheet()">
+            <span id="curNum">1</span> / <span id="totalNum">--</span> <span style="font-size:12px">▼</span>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="tool-btn" onclick="toggleMistakeMode()" id="btnMistake">
+            📖 错题本 <span id="wrongCount" style="background:#E2E8F0;color:#64748B;padding:1px 6px;border-radius:10px;font-size:11px;">0</span>
+        </div>
+        <div class="tool-btn" onclick="toggleRandomMode()" id="btnRandom">
+            🔀 随机
+        </div>
+        <div class="tool-btn" onclick="restartProgress()">
+            🔄 重置进度
+        </div>
     </div>
 </div>
 
 <div class="main">
-    <div class="container">
+    <div class="container" id="qContainer">
         <div class="card">
             <div class="meta">
-                <span class="tag single" id="qTag">单选</span>
-                <span class="q-id">第 <span id="qIdx">1</span> 题</span>
+                <div class="tag-group">
+                    <span class="tag single" id="qTag">单选</span>
+                </div>
+                <span class="q-id">原题号: <span id="realIdx">1</span></span>
             </div>
             <div class="question" id="qText">题目加载中...</div>
             <div class="options" id="optBox"></div>
             
-            <button class="btn-submit" id="subBtn" onclick="submitMulti()">提交答案</button>
+            <button class="btn-submit" id="subBtn" onclick="submitMulti()">确认提交</button>
 
             <div class="analysis" id="analysis">
-                <div style="font-size:13px;color:#64748B;margin-bottom:4px">正确答案</div>
-                <div style="font-size:18px;font-weight:bold;color:var(--primary)" id="rightAns"></div>
+                <div style="font-size:13px;color:#64748B;margin-bottom:6px">正确答案</div>
+                <div style="font-size:20px;font-weight:bold;color:var(--primary)" id="rightAns"></div>
+                <div id="mistakeMsg" style="margin-top:8px;font-size:13px;color:var(--error);display:none"></div>
             </div>
         </div>
+    </div>
+    
+    <div class="empty-state" id="emptyState" style="display:none">
+        <span class="empty-icon">🎉</span>
+        <h3>恭喜！列表已清空</h3>
+        <p>所有题目都已完成</p>
+        <button onclick="exitEmptyState()" style="margin-top:20px;padding:10px 24px;background:var(--primary);color:white;border:none;border-radius:20px;font-weight:bold;font-size:14px">返回全部题目</button>
     </div>
 </div>
 
@@ -114,17 +159,17 @@
 <div class="modal" id="sheetModal" onclick="toggleSheet()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3>答题卡</h3>
-            <span onclick="toggleSheet()" style="padding:10px;font-size:24px;color:#94A3B8">&times;</span>
+            <h3 style="font-size:18px;margin:0">答题卡</h3>
+            <span onclick="toggleSheet()" style="padding:8px;font-size:24px;color:#94A3B8;cursor:pointer">&times;</span>
         </div>
         <div class="grid" id="sheetBox"></div>
     </div>
 </div>
 
 <script>
-// 完整题库数据：严格对照PDF录入，包含所有长难句
+// --- 完整数据 ---
 const db = [
-    // --- Page 1 ---
+    // Page 1
     {t:1, q:"1. 滤油器的进、出口压差随着滤芯的堵塞而（ ）。", o:["减小","不变","增大","不变或增大"], a:"C"},
     {t:1, q:"2. 直接选配法的装配质量在很大程度上取决于（ ）。", o:["零件的加工精度","工人的技术水平","生产的批量","装配的工具"], a:"B"},
     {t:1, q:"3. 柴油发动机活塞环不是一个整圆环，而是呈开口状，在自由状态下的直径（ ）气缸直径。", o:["大于","等于","小于","等于或大于"], a:"A"},
@@ -141,7 +186,7 @@ const db = [
     {t:1, q:"14. 发动机进气门晚关的目的是（ ）。", o:["减少进气阻力","排气更容易","减少进气量","充分利用气流的惯性，增加进气量"], a:"D"},
     {t:1, q:"15. 造成机油压力过低的主要原因是供给主油道量（ ），或是主油道以后的油路有漏油现象。", o:["不变","增多","减少","减少或不变"], a:"C"},
 
-    // --- Page 2 ---
+    // Page 2
     {t:1, q:"1. 《铁路交通事故应急救援和调查处理条例》是由哪个部门发布的？", o:["中华人民共和国铁道部","中华人民共和国国务院","国家安全生产监督管理总局","中华人民共和国交通运输部"], a:"B"},
     {t:1, q:"2. 《铁路交通事故应急救援和调查处理条例》自何时起施行？", o:["2007年6月27日","2007年7月1日","2007年7月11日","2007年9月1日"], a:"B"},
     {t:1, q:"3. 造成多少人以上死亡的铁路交通事故属于特别重大事故？", o:["10人","20人","30人","50人"], a:"C"},
@@ -156,26 +201,23 @@ const db = [
     {t:1, q:"12. 负有事故全部责任的单位，应承担事故直接经济损失费用的比例是（ ）", o:["30%以下","30%-50%","50%以上","100%"], a:"D"},
     {t:1, q:"13. 每日事故的统计时间范围是（ ）", o:["上一日0时至当日0时","上一日6时至当日6时","上一日12时至当日12时","上一日18时至当日18时"], a:"D"},
 
-    // --- Page 3 (用户指出有缺漏的页面) ---
+    // Page 3
     {t:1, q:"14. 一起事故同时符合两个以上事故等级的，应按哪个等级进行统计？", o:["较低事故等级","较高事故等级","平均事故等级","任意一个等级"], a:"B"},
     {t:1, q:"15. 《铁路交通事故调查处理规则》自何时起施行？", o:["2007年7月1日","2007年8月19日","2007年8月28日","2007年9月1日"], a:"D"},
     {t:1, q:"1. 在显示停车信号的信号机前，必须果断停车，停车后列车管减压量不得少于（ ）。", o:["80kPa","60kPa","120kPa","100kPa"], a:"D"},
     {t:1, q:"2. 严格执行运行揭示调度命令“接收、编辑、（ ）、传递、导入”制度，确保运行揭示调度命令准确无误，GYK导入（输入）数据有效，准确控制运行速度。", o:["核对","确认","互控","登记"], a:"A"},
     {t:1, q:"3. 整列制动机试验时，本务司机与尾部司机必须注意核对风压、（ ），认真检查列车制动主管压力的变化情况，确保全列贯通良好。", o:["充排风时间","总风缸风压","列车管压力","制动力"], a:"A"},
     {t:1, q:"4. 列车在区间被迫停车不能继续运行时，应立即使用列车无线调度通信设备通知( )（列车调度员），报告停车原因和停车位置。", o:["前方车站","后方车站","段调度","两端站值班员"], a:"D"},
-    // 修正：补全调谐区题目的完整文本
     {t:1, q:"5. 在自动闭塞区间运行时不准停在调谐区内。因紧急制动停车或被迫停在调谐区内时，须立即通知后续列车、向两端站值班员（列车调度员）报告停车位置（具备移动条件时司机须先将车辆移动不少于（ ）米。", o:["60","80","20","180"], a:"C"},
     {t:1, q:"6. 运行中使用紧急制动阀停车后再开车时，司机须检查制动主管的贯通状态（本务司机确认制动主管压力达到规定压力后，操作自动制动阀减压（ ）kpa，补机司机确认发生制动作用）。", o:["80","100","50","120"], a:"C"},
-    // 修正：补全宿营车题目的完整文本
     {t:1, q:"7. 宿营车、供电车、餐车、卫生车、工具车等附属车辆在车站或专用线停留过夜时，除设置防溜铁鞋、拧紧两端人力制动机外，还须在距离停留车辆不超（ ）m处设置防溜枕木。。", o:["5","10","6","2"], a:"A"},
     {t:1, q:"8. 单车作业，司机须确认自阀最大减压量，单阀全制位，制动缸压力（ ）KPa以上方可进行换端作业，。", o:["200","150","300","100"], a:"C"},
     {t:1, q:"9. 司机出勤时应认真核对运行揭示，重点掌握( )级防洪地段位置、联控用语等关键内容。。", o:["Ⅱ","Ⅰ、Ⅱ","Ⅰ","所有"], a:"B"},
     {t:1, q:"10. 运行中牵引通过“鱼背形”坡道时，本务车越过变坡点后应缓慢地( )牵引力。", o:["消除","控制","加大","减小"], a:"D"},
-    // 修正：补全施工预备会题目的完整文本
     {t:1, q:"11. 施工预备会，应明确机械车的作业任务、施工地点、封锁区间、计划封锁时间、运行和作业安全措施、施工负责人联系方式等内容，并提前以( )形式通知到司机。", o:["口头","书面","会议","网络"], a:"B"},
     {t:1, q:"12. 施工中，司机必须掌握( )变化情况，确保施工期间行车安全。", o:["线路设备","行车设备","信号","车辆"], a:"B"},
 
-    // --- Page 4 ---
+    // Page 4
     {t:1, q:"13. 进入长大下坡道前，本务车司机应择机进行制动机贯通试验，列车制动主管减压量不小于( )kPa，车列速度下降3～5km/h后缓解，确认制动性能良好。", o:["50","100","80","60"], a:"A"},
     {t:1, q:"14. 机械车上高速铁路运行时，运用单位须指派或( )以上人员进行盯控。", o:["工长","副段","主任","副主任"], a:"D"},
     {t:1, q:"15. 多线并行地段，发车前正、副司机应双人确认（ ）灯位显示", o:["出站","进路","发车进路表示器","调车"], a:"C"},
@@ -191,7 +233,7 @@ const db = [
     {t:1, q:"10. 109分配阀处于制动保压位时,制动缸及其连接管系发生泄漏后，制动缸压力将 （ ）。", o:["下降","上升","保持不变","一会下降一会上升"], a:"C"},
     {t:1, q:"11. JZ-7型空气制动机在调整制动缸最高压力时，单阀手柄应置于（ ） 。", o:["单独缓解位","运转位","全制动位","单独作用位"], a:"C"},
 
-    // --- Page 5 ---
+    // Page 5
     {t:1, q:"12. DC-32k捣固车规定的闸瓦间隙为（ ）mm。", o:["5～10","11～16","17～20","19～21"], a:"A"},
     {t:1, q:"13. 转向架上的基础制动装置，可以将制动缸活塞产生的制动原力（ ） 。", o:["放大","减小","保持不变","不变"], a:"A"},
     {t:1, q:"14. （ ）不能产生制动原力。", o:["空气制动机","手制动机","基础制动装置","止轮器"], a:"C"},
@@ -199,7 +241,7 @@ const db = [
     {t:1, q:"1. 为保护蓄电池，每次起动不超过（ ）S，两次起动应间隔2分钟，三次起动不着须排除故障后再起动；", o:["3","4","5","9"], a:"C"},
     {t:1, q:"2. 控制启动马达继电器的线号是（ ）", o:["206","208","313","314"], a:"A"},
     {t:1, q:"3. 末级离合继电器自保回路供电的线号是（ ）", o:["206","208","243","215"], a:"B"},
-    {t:1, q:"4. DC---32、DCL---32给监测回路供电的是( ).", o:["A43","A26","201","204"], a:"A"},
+    {t:1, q:"4. DC---32、DCL---32给监测回路供电的是( ).", o:["443","426","201","204"], a:"A"},
     {t:1, q:"5. 08-32捣固车变矩器的报警电路监视着( )个信号", o:["2","3","4","5"], a:"B"},
     {t:1, q:"6. 在测量液力机械变速箱的油位时,机油温度在80C时,油位高度应达到标尺刻度的（）限。", o:["上","中","下","点"], a:"A"},
     {t:1, q:"7. 测量轮对内侧距，应满足( )mm", o:["1353±1","1353±2","1353±3","1353±4"], a:"C"},
@@ -207,7 +249,7 @@ const db = [
     {t:1, q:"9. 线路维修捣固作业捣固时应设置不少于（ ）MM的基本起道量", o:["10","20","30","50"], a:"A"},
     {t:1, q:"10. 《大型养路机械修程修制管理规定》修程管理中，大机检修实行 ()级修程。", o:["1","5","30","4"], a:"B"},
 
-    // --- Page 6 ---
+    // Page 6
     {t:1, q:"11. 加注柴油时，必须经装有()目滤芯的过滤器过滤", o:["200","100","300","50"], a:"A"},
     {t:1, q:"12. 道岔维修捣固作业范围包括岔区及其前后各（ ）M的线路，一次起道量应控制在10～50 mm，拨道量不超过20 mm，接头、辙叉、尖轨曲向可弯部位增加捣固次数", o:["20","30","","50"], a:"D"},
     {t:1, q:"13. 捣固车一次起道量不宜超过50mm，起道量超过50mm应分两次起道捣固；一次拨道量不宜超过（）", o:["80","120","150","200"], a:"A"},
@@ -223,8 +265,8 @@ const db = [
     {t:1, q:"23. 具有火灾、爆炸危险的场所应设置明显的警示标志，禁止吸烟、使用（ ）。", o:["器械","明火","油料","氧气"], a:"B"},
     {t:1, q:"24. 工班长对所属工程宿营车（ ）不少于一次消防检查；", o:["每年","每季","每月","每周"], a:"D"},
 
-    // --- Page 7 ---
-    {t:1, q:"25. 非施工期间，工程宿营车在基地及段管线停留时，按照车辆封存相关规定，切断全车电源，关闭车窗、锁闭车门、张贴封条。安排专人不超过（）小时对停留工程宿营车进行一次巡视检查,按要求填写 “防火防溜二维", o:["A4","B6","C12","D24"], a:"C"},
+    // Page 7
+    {t:1, q:"25. 非施工期间，工程宿营车在基地及段管线停留时，按照车辆封存相关规定，切断全车电源，关闭车窗、锁闭车门、张贴封条。安排专人不超过（ ）小时对停留工程宿营车进行一次巡视检查,按要求填写 “防火防溜二维", o:["A4","B6","C12","D24"], a:"C"},
     {t:2, q:"1. 安全疏散设施包括（ ）、（ ）、疏散楼梯、（ ）、（ ）等设施，以及消防过滤式自救呼吸器、逃生缓降器等安全疏散辅助器材。", o:["疏散门","疏散走道","消防应急照明","疏散指示标志"], a:"ABCD"},
     {t:2, q:"2. 消防安全“四懂”包括哪些内容？（）（）（）（）", o:["懂火灾的危险性","懂预防火灾的基本知识","懂扑救火灾的方法","懂疏散逃生的方法"], a:"ABCD"},
     {t:2, q:"3. 消防安全“四会”包括哪些内容？（）（）（）（）", o:["会报火警","会使用消防器材","会扑救初起火灾","会自救逃生"], a:"ABCD"},
@@ -239,7 +281,7 @@ const db = [
     {t:1, q:"7. 遇天气恶劣，信号机显示距离不足（ ）时，司机或车站值班员须立即报告列车调度员", o:["800m","400m","200m","1200m"], a:"C"},
     {t:1, q:"8. 红色许可证（ ）使用", o:["两架以上信号机故障","电话中断时的行车","基本闭塞行车法出现问题","特殊情况下"], a:"B"},
 
-    // --- Page 8 ---
+    // Page 8
     {t:1, q:"9. 取得红色许可证后。应采取最快的方法传送，优先方向车站如无开往区间的列车时，在确认区间空闲后，可使用（ ）车或单机传送。", o:["重型轨道","轨道车","大型养路机械设备","途径所有列车"], a:"A"},
     {t:1, q:"10. 脱离驾驶岗位（ ）个月及以上的司机持有效的《铁路机车车辆驾驶证》» 或 «理论考试合格证明» 、经运用单位组织培训且考试合格后方可重返驾驶岗位", o:["1","3","6","9"], a:"B"},
     {t:1, q:"11. 轨道作业车应安装作业（）系统、 轴温监测装置等行车安全设备发挥其在事故故障预防及分析中的作用。", o:["视频安全监控","GYK","GYK、CIR","GMS"], a:"A"},
@@ -248,7 +290,7 @@ const db = [
     {t:1, q:"14. 规范施工组织方案编制明确作业内容和要求将轨道作业车调车转线、运行径路、 （ ）、 解列连挂等纳入施工组织方案", o:["停车地点","防护地点","特殊信号机位置","站界"], a:"A"},
     {t:1, q:"15. 施工预备会应明确轨道作业车的作业任务、 施工地点、 封锁区间、（）、 运行作业安全措施等内容并提前以书面式通知到司机", o:["计划封锁时间","施工任务量","准备工作内容","安全关键项点"], a:"A"},
     
-    // --- 判断题区域 (Page 8 - 13) ---
+    // 判断题
     {t:3, q:"1. 柴油发动机的工作冲程也叫膨胀冲程或爆发冲程。（ ）", o:["对","错"], a:"A"},
     {t:3, q:"2. 要提高机修装备精度，必须提高零件的加工精度。（ ）", o:["对","错"], a:"B"},
     {t:3, q:"3. 柴油发动机的燃烧过程是柴油机工作循环中起决定性作用的过程。（ ）", o:["对","错"], a:"A"},
@@ -258,7 +300,7 @@ const db = [
     {t:3, q:"7. 柴油发动机的每一工作循环都包括进气、压缩、作功或膨胀和排气四个冲程，这四个冲程是不断重复进行的（ ）。", o:["对","错"], a:"A"},
     {t:3, q:"8. 完成一个工作循环，活塞要连续运行四个冲程（曲轴旋转两周）的柴油发动机就叫四冲程柴油机（ ）。", o:["对","错"], a:"A"},
 
-    // --- Page 9 ---
+    // Page 9
     {t:3, q:"9. 活塞上、下运行时，活塞离曲轴中心最大距离的位置称为上止点， 离曲轴中心最小距离的位置称为下止点，上、下止点，活塞的运动方向将得到改变，活塞的速度等于零（ ）。", o:["对","错"], a:"A"},
     {t:3, q:"10. 曲柄连杆机构主要由机体组、曲轴飞轮组和活塞连杆组三大部分组成（ ）。", o:["对","错"], a:"A"},
     {t:3, q:"11. 发动机排量是指发动机各气缸燃烧室容积的总和（ ）。", o:["对","错"], a:"B"},
@@ -283,7 +325,7 @@ const db = [
     {t:3, q:"15. 机车车辆断轴造成事故，由于货物超载造成的，定装车站或作业站责任。", o:["正确","错误"], a:"A"},
     {t:3, q:"1. 司机要听从施工负责人的指挥，在施工负责人下达动车指令后，司机要向施工负责人再次复述动车指令内容，进行二次核对，确认运行方向无误后方可动车。（ ）", o:["对","错"], a:"A"},
 
-    // --- Page 10 ---
+    // Page 10
     {t:3, q:"2. 挂运时手动将GYK放风塞门关闭，防止放风自停。驾驶室内的制动机手柄必须取出并做好防误碰措施，防止误动作。（ ）", o:["对","错"], a:"A"},
     {t:3, q:"3. 挂运时，押运负责人应安排人员添乘机车，提前与机车司机联系并交代缓解等技术要求与安全注意事项；其中大型养路机械必须有1名是机长或副机长；每组宿营车配置随车检车人员（经车辆段培训合格的人员）不少", o:["对","错"], a:"A"},
     {t:3, q:"4. 运行中发现制动、走行部及与行车安全有关的总成、部件出现异常，必须立即停车检查处理，并及时汇报车站值班员或列车调度员。（ ）", o:["对","错"], a:"A"},
@@ -305,7 +347,7 @@ const db = [
     {t:3, q:"6. YZ-1型空气制动机的空气制动阀转换柱塞处于电空位时作自动制动阀使", o:["对","错"], a:"B"},
     {t:3, q:"7. 当自动制动阀处在缓解位时，调压后的总风向均衡风缸充风，均衡风缸压力上升。（ ）", o:["对","错"], a:"A"},
 
-    // --- Page 11 ---
+    // Page 11
     {t:3, q:"8. 当自动制动阀处在制动位时，均衡风缸的压力空气排入大气，均衡风缸压力下降。（ ）", o:["对","错"], a:"A"},
     {t:3, q:"9. YZ-1型空气制动机自动制动阀处于保压位时，制动主管压力泄漏可以得到补充。 （ ）", o:["对","错"], a:"B"},
     {t:3, q:"10. YZ-1型空气制动机制动主管的压力变化是通过均衡风缸的压力变化来控制的，而均衡风缸的压力变化是通过操纵自动制动阀来实现的。（", o:["对","错"], a:"A"},
@@ -333,7 +375,7 @@ const db = [
     {t:3, q:"2. 防火巡查时发现火灾，应立即启动单位灭火和应急疏散预案。", o:["对","错"], a:"B"},
     {t:3, q:"3. 需要经常保持开启状态的防火门，应采用常开式防火门，设置自动和手动关闭装置，并保证其火灾时能自动关闭。", o:["对","错"], a:"A"},
 
-    // --- Page 12 ---
+    // Page 12
     {t:3, q:"4. 客房内应设置醒目、耐久的“请勿卧床吸烟”提示牌和楼层安全疏散及客房所在位置示意图。", o:["对","错"], a:"A"},
     {t:3, q:"5. 电动车应在指定安全地点停放、充电，禁止在建筑物首层门厅、共用走道、楼梯间、楼道等共用部位，以及疏散通道、安全出口、消防车通道及其两侧影响通行的区域、人员密集场所的室内区域停放或充电。", o:["对","错"], a:"A"},
     {t:3, q:"6. 进行电焊、气割等具有火灾危险作业的人员必须持证上岗，并遵守消防安全操作规程。", o:["对","错"], a:"A"},
@@ -356,7 +398,7 @@ const db = [
     {t:3, q:"23. 运行揭示数据文件必须由段、车间使用模拟运行测试设备进行模拟验证后", o:["对","错"], a:"A"},
     {t:3, q:"24. 上线运行前，应根据线路坡度、坡长进行合理编组，原则上各车制动型式原则上相同，并保证车组操纵端具有良好的暸望条件", o:["对","错"], a:"B"},
 
-    // --- Page 13 ---
+    // Page 13
     {t:3, q:"1. 制动机类型按标准进行试验情况，JZ-1、DK-1、YZ-7型制动机按照五步闸试验方法与项目进行试验", o:["对","错"], a:"B"},
     {t:3, q:"2. 进入停有机车车辆线路的道岔后，应根据停留车位置，正确掌握速度，最高速度不得超过15 km/h", o:["对","错"], a:"B"},
     {t:3, q:"3. 自轮运转设备上线运行时，GYK、视频监控装置以及轴温监测装置（含车轴轴箱、车轴齿轮箱以及踏面温度监测装置）须保持状态良好，全程开", o:["对","错"], a:"A"},
@@ -364,172 +406,339 @@ const db = [
     {t:3, q:"5. 调车模式转换（调车信号开放后，本务机为相应调车模式，补机为调车模", o:["对","错"], a:"B"}
 ];
 
-// --- 逻辑处理 ---
-let currIdx = 0;
-let userAns = new Array(db.length).fill(null);
-let ansState = new Array(db.length).fill(0); // 0:未答 1:对 2:错
-let tempSelect = [];
+// --- 核心逻辑 ---
+const STORAGE_KEY = 'exam_mistakes_v1';
+let mistakeList = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let isMistakeMode = false;
+let isRandomMode = false;
 
-const els = {
-    qTag: document.getElementById('qTag'),
-    qIdx: document.getElementById('qIdx'),
-    qText: document.getElementById('qText'),
-    optBox: document.getElementById('optBox'),
-    analysis: document.getElementById('analysis'),
-    rightAns: document.getElementById('rightAns'),
-    subBtn: document.getElementById('subBtn'),
-    sheetBox: document.getElementById('sheetBox'),
-    sheetModal: document.getElementById('sheetModal'),
-    curNum: document.getElementById('curNum'),
-    totalNum: document.getElementById('totalNum')
-};
+// 状态管理
+let currentList = db.map((_, i) => i); // 当前题目ID列表
+let currPtr = 0; // 当前在列表中的位置
+let userAnswers = {}; 
+let answerStatus = {}; 
+let tempSelection = []; 
+let optionOrderCache = {}; // 缓存每道题的选项顺序 { realIdx: [0,1,2,3] }
 
-function init() {
-    els.totalNum.innerText = db.length;
-    renderQ();
-    renderSheet();
+// --- 模式切换 ---
+
+// 错题本模式
+function toggleMistakeMode() {
+    if (isRandomMode) toggleRandomMode(); // 互斥，先关随机
+
+    if (!isMistakeMode) {
+        if (mistakeList.length === 0) return alert("太棒了！当前没有错题。");
+        isMistakeMode = true;
+        currentList = [...mistakeList];
+        // 重置错题本状态（让用户可以重做）
+        resetCurrentStatus();
+        
+        document.getElementById('btnMistake').classList.add('active-mistake');
+        document.getElementById('btnMistake').innerHTML = `📖 退出错题 <span style="background:white;color:var(--error);padding:1px 6px;border-radius:10px;font-size:11px;margin-left:4px" id="wrongCount">${mistakeList.length}</span>`;
+    } else {
+        isMistakeMode = false;
+        currentList = db.map((_, i) => i);
+        document.getElementById('btnMistake').classList.remove('active-mistake');
+        document.getElementById('btnMistake').innerHTML = `📖 错题本 <span style="background:#E2E8F0;color:#64748B;padding:1px 6px;border-radius:10px;font-size:11px;margin-left:4px" id="wrongCount">${mistakeList.length}</span>`;
+    }
+    currPtr = 0;
+    render();
 }
 
-function renderQ() {
-    const q = db[currIdx];
-    const done = ansState[currIdx] !== 0;
+// 随机模式
+function toggleRandomMode() {
+    if (isMistakeMode) toggleMistakeMode(); // 互斥，先关错题
+
+    if (!isRandomMode) {
+        isRandomMode = true;
+        // 打乱题目顺序
+        currentList = db.map((_, i) => i).sort(() => Math.random() - 0.5);
+        // 清空选项缓存，强制重新生成随机选项
+        optionOrderCache = {};
+        resetCurrentStatus();
+        
+        document.getElementById('btnRandom').classList.add('active-random');
+        document.getElementById('btnRandom').innerHTML = `🔀 退出随机`;
+    } else {
+        isRandomMode = false;
+        // 恢复顺序
+        currentList = db.map((_, i) => i);
+        document.getElementById('btnRandom').classList.remove('active-random');
+        document.getElementById('btnRandom').innerHTML = `🔀 随机`;
+    }
+    currPtr = 0;
+    render();
+}
+
+// 重置进度
+function restartProgress() {
+    if(!confirm("确定要重置当前模式的所有做题记录吗？")) return;
+    resetCurrentStatus();
+    currPtr = 0;
+    render();
+}
+
+function resetCurrentStatus() {
+    // 仅清除当前列表中的题目记录
+    currentList.forEach(idx => {
+        delete answerStatus[idx];
+        delete userAnswers[idx];
+    });
+}
+
+function exitEmptyState() {
+    if(isMistakeMode) toggleMistakeMode();
+    else if(isRandomMode) toggleRandomMode();
+    else {
+        // 普通模式做完了，重置一下
+        restartProgress();
+    }
+}
+
+// --- 渲染 ---
+function render() {
+    // 空状态处理
+    if (currentList.length === 0) {
+        document.getElementById('qContainer').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('curNum').innerText = 0;
+        document.getElementById('totalNum').innerText = 0;
+        return;
+    } else {
+        document.getElementById('qContainer').style.display = 'block';
+        document.getElementById('emptyState').style.display = 'none';
+    }
+
+    const realIdx = currentList[currPtr];
+    const q = db[realIdx];
+    const status = answerStatus[realIdx] || 0;
     
-    // 更新元数据
-    els.curNum.innerText = currIdx + 1;
-    els.qIdx.innerText = currIdx + 1;
-    els.qTag.innerText = q.t === 1 ? '单选' : (q.t === 2 ? '多选' : '判断');
-    els.qTag.className = `tag ${q.t === 2 ? 'multi' : (q.t === 3 ? 'judge' : 'single')}`;
-    els.qText.innerText = q.q;
+    document.getElementById('realIdx').innerText = realIdx + 1;
+    document.getElementById('curNum').innerText = currPtr + 1;
+    document.getElementById('totalNum').innerText = currentList.length;
     
+    const tagEl = document.getElementById('qTag');
+    tagEl.innerText = q.t === 1 ? '单选' : (q.t === 2 ? '多选' : '判断');
+    tagEl.className = `tag ${q.t === 2 ? 'multi' : (q.t === 3 ? 'judge' : 'single')}`;
+    
+    document.getElementById('qText').innerText = q.q;
+    
+    const optBox = document.getElementById('optBox');
+    optBox.innerHTML = '';
+    tempSelection = [];
+
+    // 获取或生成选项顺序
+    let indices = [0, 1, 2, 3].slice(0, q.o.length);
+    if (isRandomMode) {
+        if (!optionOrderCache[realIdx]) {
+            // 生成随机顺序并缓存
+            optionOrderCache[realIdx] = indices.sort(() => Math.random() - 0.5);
+        }
+        indices = optionOrderCache[realIdx];
+    } else {
+        optionOrderCache[realIdx] = indices; // 顺序模式也缓存，保持统一
+    }
+
     // 渲染选项
-    els.optBox.innerHTML = '';
-    tempSelect = [];
-    
-    q.o.forEach((opt, i) => {
-        const key = String.fromCharCode(65 + i);
+    indices.forEach((originalIndex, visualIndex) => {
+        // visualIndex 是显示的 A,B,C,D
+        // originalIndex 是数据库中选项的真实索引
+        const key = String.fromCharCode(65 + visualIndex); // 显示用的 Key
+        const originalKey = String.fromCharCode(65 + originalIndex); // 真实答案对应的 Key
+        
         const div = document.createElement('div');
         div.className = 'opt';
-        div.onclick = () => handleInput(key, i);
-        
-        // 回显状态
-        if (done) {
-            if (q.t === 2) { // 多选回显
-                if (q.a.includes(key)) div.classList.add('correct');
-                if (userAns[currIdx].includes(key) && !q.a.includes(key)) div.classList.add('wrong');
-            } else { // 单选/判断回显
-                if (key === q.a) div.classList.add('correct');
-                else if (userAns[currIdx] === key) div.classList.add('wrong');
+        div.onclick = () => handleSelect(originalKey, visualIndex, realIdx); // 传 originalKey 判分
+
+        if (status !== 0) {
+            // 回显逻辑
+            if (q.t === 2) {
+                // 多选
+                const isCorrectOpt = q.a.includes(originalKey);
+                const isUserSelected = userAnswers[realIdx].includes(originalKey);
+                
+                if (isCorrectOpt) div.classList.add('correct');
+                if (isUserSelected && !isCorrectOpt) div.classList.add('wrong');
+                if (isUserSelected && isCorrectOpt) div.classList.add('selected'); // 高亮选中且对的
+            } else {
+                // 单选/判断
+                if (originalKey === q.a) div.classList.add('correct');
+                else if (userAnswers[realIdx] === originalKey) div.classList.add('wrong');
             }
+        } else if (tempSelection.includes(originalKey)) {
+            div.classList.add('selected');
         }
         
         div.innerHTML = `
             <div class="opt-key">${key}</div>
-            <div class="opt-text">${opt}</div>
+            <div class="opt-text">${q.o[originalIndex]}</div>
         `;
-        els.optBox.appendChild(div);
+        optBox.appendChild(div);
     });
 
-    // 底部状态
-    if (q.t === 2 && !done) {
-        els.subBtn.style.display = 'block';
-        els.analysis.classList.remove('show');
+    // 底部控制
+    const subBtn = document.getElementById('subBtn');
+    const analysis = document.getElementById('analysis');
+    
+    if (q.t === 2 && status === 0) {
+        subBtn.style.display = 'block';
+        analysis.style.display = 'none';
     } else {
-        els.subBtn.style.display = 'none';
-        if (done) {
-            els.rightAns.innerText = q.a;
-            els.analysis.classList.add('show');
+        subBtn.style.display = 'none';
+        if (status !== 0) {
+            analysis.style.display = 'block';
+            
+            // 显示正确答案（如果是随机模式，需要把 "C" 转换成视觉上的 "A/B/D" 吗？通常显示原始内容比较好，或者显示"选项内容"）
+            // 这里为了简单，显示原始答案字母，但在随机模式下可能让用户困惑。
+            // 优化：显示正确选项的文本内容
+            let correctText = "";
+            if (q.t === 2) {
+                correctText = q.a.split('').map(k => q.o[k.charCodeAt(0)-65]).join('；');
+            } else {
+                correctText = q.o[q.a.charCodeAt(0)-65];
+            }
+            document.getElementById('rightAns').innerHTML = `
+                <span style="font-size:16px;color:#334155">${correctText}</span>
+                <br><span style="font-size:12px;color:#94A3B8">原始答案: ${q.a}</span>
+            `;
+            
+            const msgEl = document.getElementById('mistakeMsg');
+            if (status === 2) {
+                analysis.classList.add('error-mode');
+                msgEl.style.display = 'block';
+                msgEl.innerText = isMistakeMode ? "依然错误，继续加油" : "已加入错题本";
+            } else {
+                analysis.classList.remove('error-mode');
+                msgEl.style.display = 'block';
+                msgEl.innerText = isMistakeMode ? "恭喜！已从错题本移除" : "回答正确";
+                msgEl.style.color = "var(--success)";
+            }
         } else {
-            els.analysis.classList.remove('show');
+            analysis.style.display = 'none';
         }
     }
 }
 
-function handleInput(key, idx) {
-    if (ansState[currIdx] !== 0) return;
-    const q = db[currIdx];
+// --- 交互 ---
+function handleSelect(originalKey, visualIndex, realIdx) {
+    if (answerStatus[realIdx]) return;
+    const q = db[realIdx];
 
-    if (q.t === 2) { // 多选
-        const el = els.optBox.children[idx];
-        if (tempSelect.includes(key)) {
-            tempSelect = tempSelect.filter(k => k !== key);
-            el.classList.remove('selected');
+    if (q.t === 2) {
+        if (tempSelection.includes(originalKey)) {
+            tempSelection = tempSelection.filter(k => k !== originalKey);
         } else {
-            tempSelect.push(key);
-            el.classList.add('selected');
+            tempSelection.push(originalKey);
         }
-    } else { // 单选/判断直接提交
-        submitSingle(key);
+        render(); // 刷新选中状态
+    } else {
+        submitSingle(originalKey, realIdx);
     }
 }
 
-function submitSingle(key) {
-    const q = db[currIdx];
-    userAns[currIdx] = key;
-    const isRight = key === q.a;
-    ansState[currIdx] = isRight ? 1 : 2;
-    updateSheetItem(currIdx);
-    renderQ();
+function submitSingle(userPick, realIdx) {
+    const q = db[realIdx];
+    const isRight = userPick === q.a;
+    
+    userAnswers[realIdx] = userPick;
+    answerStatus[realIdx] = isRight ? 1 : 2;
+    
+    processResult(isRight, realIdx);
+    render();
+    
+    if (isRight) {
+        setTimeout(() => {
+            if (currentList[currPtr] === realIdx) {
+                changeQ(1);
+            }
+        }, 500);
+    }
 }
 
 function submitMulti() {
-    if (tempSelect.length === 0) return alert("请至少选择一个选项");
-    const q = db[currIdx];
-    const myAns = tempSelect.sort().join('');
-    userAns[currIdx] = myAns;
-    const isRight = myAns === q.a;
-    ansState[currIdx] = isRight ? 1 : 2;
-    updateSheetItem(currIdx);
-    renderQ();
+    const realIdx = currentList[currPtr];
+    if (tempSelection.length === 0) return alert("请至少选择一项");
+    
+    const userPick = tempSelection.sort().join('');
+    const q = db[realIdx];
+    const isRight = userPick === q.a;
+
+    userAnswers[realIdx] = userPick;
+    answerStatus[realIdx] = isRight ? 1 : 2;
+
+    processResult(isRight, realIdx);
+    render();
 }
 
-function changeQ(step) {
-    const next = currIdx + step;
-    if (next >= 0 && next < db.length) {
-        currIdx = next;
-        renderQ();
-        highlightSheetCurr();
+function processResult(isRight, realIdx) {
+    if (!isRight) {
+        if (!mistakeList.includes(realIdx)) {
+            mistakeList.push(realIdx);
+            saveMistakes();
+        }
     } else {
-        alert(step > 0 ? "已经是最后一题了" : "已经是第一题了");
+        if (isMistakeMode) {
+            mistakeList = mistakeList.filter(id => id !== realIdx);
+            saveMistakes();
+        }
     }
 }
 
-// --- 答题卡 ---
-function renderSheet() {
-    els.sheetBox.innerHTML = '';
-    db.forEach((_, i) => {
-        const div = document.createElement('div');
-        div.className = 'grid-item';
-        div.innerText = i + 1;
-        div.id = 'sheet-' + i;
-        div.onclick = () => {
-            currIdx = i;
-            renderQ();
-            toggleSheet();
-            highlightSheetCurr();
-        };
-        els.sheetBox.appendChild(div);
-    });
-    highlightSheetCurr();
+function saveMistakes() {
+    mistakeList = [...new Set(mistakeList)].sort((a,b) => a-b);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mistakeList));
+    updateMistakeBtn();
 }
 
-function updateSheetItem(i) {
-    const el = document.getElementById('sheet-' + i);
-    const s = ansState[i];
-    el.className = `grid-item ${s===1 ? 'ok' : 'err'}`;
-    if (i === currIdx) el.classList.add('curr');
+function updateMistakeBtn() {
+    const el = document.getElementById('wrongCount');
+    if(el) el.innerText = mistakeList.length;
 }
 
-function highlightSheetCurr() {
-    Array.from(els.sheetBox.children).forEach(el => el.classList.remove('curr'));
-    document.getElementById('sheet-' + currIdx)?.classList.add('curr');
+function changeQ(step) {
+    const nextPtr = currPtr + step;
+    if (nextPtr >= 0 && nextPtr < currentList.length) {
+        currPtr = nextPtr;
+        render();
+    } else {
+        if (step > 0) alert("已经是最后一题了！");
+        else alert("已经是第一题了！");
+    }
 }
 
+// 答题卡
 function toggleSheet() {
-    const show = els.sheetModal.style.display === 'block';
-    els.sheetModal.style.display = show ? 'none' : 'block';
+    const modal = document.getElementById('sheetModal');
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'block';
+        renderSheet();
+    }
 }
 
-init();
+function renderSheet() {
+    const box = document.getElementById('sheetBox');
+    box.innerHTML = '';
+    
+    currentList.forEach((realIdx, i) => {
+        const div = document.createElement('div');
+        const st = answerStatus[realIdx] || 0;
+        div.className = `grid-item ${st === 1 ? 'ok' : (st === 2 ? 'err' : '')}`;
+        if (i === currPtr) div.classList.add('curr');
+        div.innerText = i + 1; // 显示当前序列号
+        div.onclick = () => {
+            currPtr = i;
+            render();
+            toggleSheet();
+        };
+        box.appendChild(div);
+    });
+}
+
+updateMistakeBtn();
+render();
+
 </script>
 </body>
 </html>
