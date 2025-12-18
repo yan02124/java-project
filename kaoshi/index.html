@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2025大机司机考试（随机+错题+重刷版）</title>
+    <title>2025大机司机考试（多选修复版）</title>
     <style>
         :root {
             --primary: #2563EB;
@@ -28,7 +28,7 @@
             font-size: 13px; padding: 6px 12px; border-radius: 20px; 
             border: 1px solid #E2E8F0; background: white; color: #475569; 
             cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.2s; user-select: none;
         }
         .tool-btn.active-mistake { background: var(--error); color: white; border-color: var(--error); }
         .tool-btn.active-random { background: var(--warn); color: white; border-color: var(--warn); }
@@ -99,7 +99,6 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     </style>
 </head>
-
 <body>
 
 <div class="header">
@@ -413,25 +412,21 @@ let mistakeList = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 let isMistakeMode = false;
 let isRandomMode = false;
 
-// 状态管理
-let currentList = db.map((_, i) => i); // 当前题目ID列表
-let currPtr = 0; // 当前在列表中的位置
+let currentList = db.map((_, i) => i);
+let currPtr = 0;
 let userAnswers = {}; 
 let answerStatus = {}; 
 let tempSelection = []; 
-let optionOrderCache = {}; // 缓存每道题的选项顺序 { realIdx: [0,1,2,3] }
+let optionOrderCache = {}; 
 
 // --- 模式切换 ---
-
-// 错题本模式
 function toggleMistakeMode() {
-    if (isRandomMode) toggleRandomMode(); // 互斥，先关随机
+    if (isRandomMode) toggleRandomMode();
 
     if (!isMistakeMode) {
         if (mistakeList.length === 0) return alert("太棒了！当前没有错题。");
         isMistakeMode = true;
         currentList = [...mistakeList];
-        // 重置错题本状态（让用户可以重做）
         resetCurrentStatus();
         
         document.getElementById('btnMistake').classList.add('active-mistake');
@@ -442,19 +437,19 @@ function toggleMistakeMode() {
         document.getElementById('btnMistake').classList.remove('active-mistake');
         document.getElementById('btnMistake').innerHTML = `📖 错题本 <span style="background:#E2E8F0;color:#64748B;padding:1px 6px;border-radius:10px;font-size:11px;margin-left:4px" id="wrongCount">${mistakeList.length}</span>`;
     }
+    
+    // 切换模式时清空临时选择
+    tempSelection = [];
     currPtr = 0;
     render();
 }
 
-// 随机模式
 function toggleRandomMode() {
-    if (isMistakeMode) toggleMistakeMode(); // 互斥，先关错题
+    if (isMistakeMode) toggleMistakeMode();
 
     if (!isRandomMode) {
         isRandomMode = true;
-        // 打乱题目顺序
         currentList = db.map((_, i) => i).sort(() => Math.random() - 0.5);
-        // 清空选项缓存，强制重新生成随机选项
         optionOrderCache = {};
         resetCurrentStatus();
         
@@ -462,25 +457,26 @@ function toggleRandomMode() {
         document.getElementById('btnRandom').innerHTML = `🔀 退出随机`;
     } else {
         isRandomMode = false;
-        // 恢复顺序
         currentList = db.map((_, i) => i);
         document.getElementById('btnRandom').classList.remove('active-random');
         document.getElementById('btnRandom').innerHTML = `🔀 随机`;
     }
+    
+    // 切换模式时清空临时选择
+    tempSelection = [];
     currPtr = 0;
     render();
 }
 
-// 重置进度
 function restartProgress() {
     if(!confirm("确定要重置当前模式的所有做题记录吗？")) return;
     resetCurrentStatus();
+    tempSelection = []; // 重置时清空
     currPtr = 0;
     render();
 }
 
 function resetCurrentStatus() {
-    // 仅清除当前列表中的题目记录
     currentList.forEach(idx => {
         delete answerStatus[idx];
         delete userAnswers[idx];
@@ -491,14 +487,12 @@ function exitEmptyState() {
     if(isMistakeMode) toggleMistakeMode();
     else if(isRandomMode) toggleRandomMode();
     else {
-        // 普通模式做完了，重置一下
         restartProgress();
     }
 }
 
 // --- 渲染 ---
 function render() {
-    // 空状态处理
     if (currentList.length === 0) {
         document.getElementById('qContainer').style.display = 'none';
         document.getElementById('emptyState').style.display = 'block';
@@ -526,43 +520,37 @@ function render() {
     
     const optBox = document.getElementById('optBox');
     optBox.innerHTML = '';
-    tempSelection = [];
+    
+    // 注意：这里不要清空 tempSelection，否则点击操作会无效。
+    // tempSelection 的清空只应发生在切换题目的时候。
 
-    // 获取或生成选项顺序
     let indices = [0, 1, 2, 3].slice(0, q.o.length);
     if (isRandomMode) {
         if (!optionOrderCache[realIdx]) {
-            // 生成随机顺序并缓存
             optionOrderCache[realIdx] = indices.sort(() => Math.random() - 0.5);
         }
         indices = optionOrderCache[realIdx];
     } else {
-        optionOrderCache[realIdx] = indices; // 顺序模式也缓存，保持统一
+        optionOrderCache[realIdx] = indices;
     }
 
-    // 渲染选项
     indices.forEach((originalIndex, visualIndex) => {
-        // visualIndex 是显示的 A,B,C,D
-        // originalIndex 是数据库中选项的真实索引
-        const key = String.fromCharCode(65 + visualIndex); // 显示用的 Key
-        const originalKey = String.fromCharCode(65 + originalIndex); // 真实答案对应的 Key
+        const key = String.fromCharCode(65 + visualIndex);
+        const originalKey = String.fromCharCode(65 + originalIndex);
         
         const div = document.createElement('div');
         div.className = 'opt';
-        div.onclick = () => handleSelect(originalKey, visualIndex, realIdx); // 传 originalKey 判分
+        div.onclick = () => handleSelect(originalKey, visualIndex, realIdx);
 
         if (status !== 0) {
-            // 回显逻辑
             if (q.t === 2) {
-                // 多选
                 const isCorrectOpt = q.a.includes(originalKey);
                 const isUserSelected = userAnswers[realIdx].includes(originalKey);
                 
                 if (isCorrectOpt) div.classList.add('correct');
                 if (isUserSelected && !isCorrectOpt) div.classList.add('wrong');
-                if (isUserSelected && isCorrectOpt) div.classList.add('selected'); // 高亮选中且对的
+                if (isUserSelected && isCorrectOpt) div.classList.add('selected');
             } else {
-                // 单选/判断
                 if (originalKey === q.a) div.classList.add('correct');
                 else if (userAnswers[realIdx] === originalKey) div.classList.add('wrong');
             }
@@ -577,7 +565,6 @@ function render() {
         optBox.appendChild(div);
     });
 
-    // 底部控制
     const subBtn = document.getElementById('subBtn');
     const analysis = document.getElementById('analysis');
     
@@ -589,9 +576,6 @@ function render() {
         if (status !== 0) {
             analysis.style.display = 'block';
             
-            // 显示正确答案（如果是随机模式，需要把 "C" 转换成视觉上的 "A/B/D" 吗？通常显示原始内容比较好，或者显示"选项内容"）
-            // 这里为了简单，显示原始答案字母，但在随机模式下可能让用户困惑。
-            // 优化：显示正确选项的文本内容
             let correctText = "";
             if (q.t === 2) {
                 correctText = q.a.split('').map(k => q.o[k.charCodeAt(0)-65]).join('；');
@@ -626,12 +610,13 @@ function handleSelect(originalKey, visualIndex, realIdx) {
     const q = db[realIdx];
 
     if (q.t === 2) {
+        // 多选逻辑：仅更新数据，不清理数组
         if (tempSelection.includes(originalKey)) {
             tempSelection = tempSelection.filter(k => k !== originalKey);
         } else {
             tempSelection.push(originalKey);
         }
-        render(); // 刷新选中状态
+        render(); // 重新渲染界面以显示选中状态
     } else {
         submitSingle(originalKey, realIdx);
     }
@@ -700,6 +685,7 @@ function changeQ(step) {
     const nextPtr = currPtr + step;
     if (nextPtr >= 0 && nextPtr < currentList.length) {
         currPtr = nextPtr;
+        tempSelection = []; // 只有在切换题目时才清空临时选择
         render();
     } else {
         if (step > 0) alert("已经是最后一题了！");
@@ -727,9 +713,10 @@ function renderSheet() {
         const st = answerStatus[realIdx] || 0;
         div.className = `grid-item ${st === 1 ? 'ok' : (st === 2 ? 'err' : '')}`;
         if (i === currPtr) div.classList.add('curr');
-        div.innerText = i + 1; // 显示当前序列号
+        div.innerText = i + 1;
         div.onclick = () => {
             currPtr = i;
+            tempSelection = []; // 切换题目清空选择
             render();
             toggleSheet();
         };
@@ -750,6 +737,5 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-
 </body>
 </html>
