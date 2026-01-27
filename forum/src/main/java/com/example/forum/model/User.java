@@ -42,6 +42,9 @@ public class User {
     @ApiModelProperty("发帖数量")
     private Integer articleCount;
 
+    @ApiModelProperty("总获赞数")
+    private Integer likeCount;
+
     @ApiModelProperty("是否管理员")
     private Byte isAdmin;
 

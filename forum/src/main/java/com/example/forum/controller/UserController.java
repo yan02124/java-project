@@ -34,6 +34,9 @@ public class UserController {
 
     @Resource
     private IUserService userService;
+    
+    @Resource
+    private com.example.forum.dao.ArticleMapper articleMapper;
 
     /**
      * 用户注册
@@ -133,6 +136,9 @@ public class UserController {
         if(user == null){
             return AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS);
         }
+        // 查询用户的总获赞数
+        Integer totalLikeCount = articleMapper.sumLikeCountByUserId(user.getId());
+        user.setLikeCount(totalLikeCount != null ? totalLikeCount : 0);
         //返回正常的结果
         return AppResult.success(user);
     }

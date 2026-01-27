@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <!-- 帖子详情页面 - 优化版 -->
 <style>
   /* 详情页整体样式 */
@@ -77,6 +78,10 @@
     font-weight: 600;
     color: #333;
     margin-bottom: 6px;
+    cursor: pointer;
+  }
+  .author-name:hover {
+    color: #667eea;
   }
   .author-badge {
     display: inline-block;
@@ -400,7 +405,7 @@
           <div class="author-stats">
             <div class="author-stat-item">
               <div class="author-stat-num" id="author_article_count">0</div>
-              <div class="author-stat-label">帖子</div>
+              <div class="author-stat-label">浏览</div>
             </div>
             <div class="author-stat-item">
               <div class="author-stat-num" id="author_like_count">0</div>
@@ -584,9 +589,24 @@
     });
 
     // ===================== 请求帖子详情 ===================== 
+    // 获取帖子ID：优先从currentArticle获取，否则从URL参数获取
+    let articleId = null;
+    if (typeof currentArticle !== 'undefined' && currentArticle && currentArticle.id) {
+      articleId = currentArticle.id;
+    } else {
+      // 从URL参数获取id
+      let urlParams = new URLSearchParams(window.location.search);
+      articleId = urlParams.get('id');
+    }
+    
+    if (!articleId) {
+      $.toast({ heading: '错误', text: '未找到帖子信息，请从首页进入', icon: 'error' });
+      return;
+    }
+    
     $.ajax({
       type: 'get',
-      url: 'article/details?id=' + currentArticle.id,
+      url: 'article/details?id=' + articleId,
       success: function (respData) {
         if (respData.code == 0) {
           initArticleDetails(respData.data);
@@ -618,7 +638,9 @@
       editormd.markdownToHTML('details_article_content', { markdown: article.content });
       
       // 作者统计
-      $('#author_article_count').html(article.user.articleCount || 0);
+      $('#author_article_count').html(article.visitCount || 0);
+      // 获赞数暂时显示当前帖子的点赞数（如需显示总获赞需要后端支持）
+      $('#author_like_count').html(article.likeCount || 0);
       
       if (article.own) {
         $('.details-is-own').show();
@@ -645,10 +667,21 @@
         }
         $('#bit-forum-content').load('profile.html');
       });
+      
+      // 加载回复列表
+      loadArticleDetailsReply();
+      
+      // 记录浏览历史
+      if (currentUserId) {
+        addToHistory(article);
+      }
     }
 
     // ====================== 加载回复列表 ======================
     function loadArticleDetailsReply() {
+      if (!currentArticle || !currentArticle.id) {
+        return;
+      }
       $.ajax({
         type: 'get',
         url: 'reply/getReplies?articleId=' + currentArticle.id,
@@ -694,8 +727,6 @@
         editormd.markdownToHTML('details_article_reply_content_' + articleReply.id, { markdown: articleReply.content });
       });
     }
-
-    loadArticleDetailsReply();
 
     // ====================== 处理点赞 ======================
     $('#details_btn_like_count').click(function () {
@@ -757,10 +788,7 @@
       localStorage.setItem('forum_history_' + currentUserId, JSON.stringify(history));
     }
     
-    // 页面加载时记录浏览历史
-    if (currentUserId && currentArticle) {
-      addToHistory(currentArticle);
-    }
+    // 页面加载时记录浏览历史（移到initArticleDetails中调用）
 
     // ====================== 回复帖子 ======================
     $('#details_btn_article_reply').click(function () {

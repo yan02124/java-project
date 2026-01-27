@@ -75,6 +75,11 @@ public interface ArticleMapper {
                                 @Param("endDate") String endDate,
                                 @Param("searchType") String searchType);
 
-
+    /**
+     * 统计用户所有帖子的总点赞数
+     * @param userId 用户ID
+     * @return 总点赞数
+     */
+    Integer sumLikeCountByUserId(@Param("userId") Long userId);
 
 }

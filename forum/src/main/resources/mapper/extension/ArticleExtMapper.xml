@@ -81,6 +81,7 @@
     u.nickname as u_nickname,
     u.gender as u_gender,
     u.isAdmin as u_isAdmin,
+    u.articleCount as u_articleCount,
     u.state as u_state,
     u.deleteState as u_deleteState,
     b.id as b_id,  
@@ -210,5 +211,12 @@
       ORDER BY a.createTime DESC
   </select>
 
+  <!-- 统计用户所有帖子的总点赞数 -->
+  <select id="sumLikeCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+    select COALESCE(sum(likeCount), 0)
+    from t_article
+    where userId = #{userId,jdbcType=BIGINT}
+    and deleteState = 0
+  </select>
 
 </mapper>

@@ -550,7 +550,7 @@
       const createTime = article.createTime ? new Date(article.createTime).toLocaleDateString('zh-CN') : '-';
       
       const html = `
-        <div class="post-item" onclick="window.location.href='details.html?id=${article.id}'">
+        <div class="post-item" data-article-id="${article.id}" style="cursor: pointer;">
           <div class="post-title">${escapeHtml(article.title)}</div>
           <div class="post-meta">
             <div class="post-time">
@@ -584,7 +584,16 @@
           </div>
         </div>
       `;
-      container.append(html);
+      const postItem = $(html);
+      // 添加点击事件，通过AJAX加载详情页
+      postItem.click(function() {
+        currentArticle = { id: article.id };
+        removeNavActive();
+        $('#bit-forum-content').load('details.html', function() {
+          $('html, body').animate({ scrollTop: 0 }, 300);
+        });
+      });
+      container.append(postItem);
     });
   }
   
