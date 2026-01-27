@@ -1,273 +1,361 @@
-<!-- Page header -->
-<div class="page-header d-print-none">
+<!-- 帖子列表页面 - 优化版 -->
+<style>
+  /* 列表页整体样式 */
+  .list-page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 18px 0;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 0 0 12px 12px;
+  }
+  .list-page-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .list-page-subtitle {
+    opacity: 0.9;
+    margin-top: 4px;
+    font-size: 0.8rem;
+  }
+  .btn-post {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 16px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .btn-post:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    color: #764ba2;
+  }
+  
+  /* 帖子卡片样式 */
+  .article-list-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .article-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f5f5f5;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .article-item:last-child {
+    border-bottom: none;
+  }
+  .article-item:hover {
+    background: #fafbff;
+  }
+  .article-item-inner {
+    display: flex;
+    gap: 12px;
+  }
+  
+  /* 头像样式 */
+  .article-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+    transition: border-color 0.2s;
+  }
+  .article-item:hover .article-avatar {
+    border-color: #667eea;
+  }
+  
+  /* 内容区域 */
+  .article-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .article-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+    display: block;
+    transition: color 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .article-title:hover {
+    color: #667eea;
+  }
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .meta-author {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #667eea;
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
+  .meta-author svg {
+    width: 12px;
+    height: 12px;
+  }
+  .meta-time {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #aaa;
+    font-size: 0.75rem;
+  }
+  .meta-time svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  /* 统计数据 */
+  .article-stats {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #aaa;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.2s;
+  }
+  .stat-item svg {
+    width: 12px;
+    height: 12px;
+  }
+  .stat-item.views:hover {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+  .stat-item.likes:hover {
+    background: #fce4ec;
+    color: #e91e63;
+  }
+  .stat-item.replies:hover {
+    background: #e8f5e9;
+    color: #4caf50;
+  }
+  
+  /* 空状态 */
+  .empty-list {
+    text-align: center;
+    padding: 40px 20px;
+    color: #bbb;
+  }
+  .empty-list svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  .empty-list h4 {
+    color: #888;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+  .empty-list p {
+    font-size: 0.8rem;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .article-stats {
+      margin-left: 0;
+      margin-top: 8px;
+    }
+    .article-item-inner {
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      padding: 2px 6px;
+      font-size: 0.7rem;
+    }
+  }
+</style>
+
+<!-- 页面头部 -->
+<div class="list-page-header">
   <div class="container-xl">
-    <div class="row g-2 align-items-center">
-      <div class="col">
-        <!-- Page pre-title -->
-        <!-- <div class="page-pretitle">
-          子标题
-        </div> -->
-        <h2 class="page-title" id="article_list_board_title">
-          <!--如果是板块页面,那么文字替换成板块名-->
-          首页
-        </h2>
-        <!-- 帖子数量 -->
-        <div class="text-muted mt-1" id="article_list_count_board"></div>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h1 class="list-page-title" id="article_list_board_title">首页</h1>
+        <div class="list-page-subtitle" id="article_list_count_board"></div>
       </div>
-      <!-- Page title actions -->
-      <div class="col-auto ms-auto d-print-none">
-        <div class="btn-list">
-          <!-- 发新帖按钮 宽屏 -->
-          <a  href="javascript:void(0);" class="btn btn-primary d-none d-sm-inline-block article_post">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-              stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 5l0 14" />
-              <path d="M5 12l14 0" />
-            </svg>
-            发布帖子
-          </a>
-          <!-- 发新帖按钮 窄屏 -->
-          <a href="javascript:void(0);" class="btn btn-primary d-sm-none btn-icon article_post" aria-label="发布帖子">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-              stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 5l0 14" />
-              <path d="M5 12l14 0" />
-            </svg>
-          </a>
-        </div>
-      </div>
+      <a href="javascript:void(0);" class="btn btn-post article_post">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+          <path d="M12 5l0 14"></path>
+          <path d="M5 12l14 0"></path>
+        </svg>
+        发布帖子
+      </a>
     </div>
   </div>
 </div>
-<!-- Page body -->
-<div class="page-body">
-  <div class="container-xl">
-    <div class="row justify-content-center">
-      <!-- 显示列表的宽度 -->
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="divide-y" id="artical-items-body">
-              <!-- 动态生成帖子列表 -->
-            </div>
-          </div>
-        </div>
-      </div>
+
+<!-- 帖子列表 -->
+<div class="container-xl">
+  <div class="article-list-card">
+    <div id="artical-items-body">
+      <!-- 动态生成帖子列表 -->
     </div>
   </div>
-  <!-- 正文 结束 -->
 </div>
+
 <script>
   $(function () {
     // ========================= 获取版块下帖子信息 =======================
-    // 获取当前选中的版块
     let activeLiEl = $('#topBoardList>.active');
-    // 构造query string
     let queryString = '';
     let boardData = activeLiEl.data('board');
-    // 导航栏版块Item是否绑定版块数据
+    
     if (boardData) {
-      // 构造query string 
       queryString = '?boardId=' + boardData.id;
-      // 获取版块信息
       getBoardInfo(boardData.id);
     } else {
-      // 设置版块名称
       $('#article_list_board_title').html('首页');
-      $('#article_list_count_board').hide();
+      $('#article_list_count_board').html('全部帖子');
     }
 
     // ========================= 获取版块信息 =======================
-    // 
-    function getBoardInfo (boardId) {
-      if (!boardId) {
-        return;
-      }
-      // 发送请求， 成功后，显示版块相关信息
+    function getBoardInfo(boardId) {
+      if (!boardId) return;
       $.ajax({
         type: 'get',
         url: 'board/getById?id=' + boardId,
-        //回调
-        success: function (respData){
-          if(respData.code == 0){
+        success: function (respData) {
+          if (respData.code == 0) {
             let board = respData.data;
-            //成功时,更细页面的内容
-            $('#article_list_board_title').html(board.name);//板块名
-            $('#article_list_count_board').html('帖子数量: ' + board.articleCount);
-          }else {
-            //失败
-            $.toast({
-              heading: '警告',
-              text: respData.message,
-              icon: 'warning'
-            });
+            $('#article_list_board_title').html(board.name);
+            $('#article_list_count_board').html('共 ' + board.articleCount + ' 篇帖子');
           }
-        },
-        error: function (){
-          //提示信息
-          $.toast({
-            heading: '错误',
-            text: '访问出现问题,请与管理员联系.',
-            icon: 'error'
-          });
         }
-
       });
     }
 
     // ========================= 获取帖子列表 =======================
-    // 成功后，调用listBuildArticleList()方法，构建帖子列表
     $.ajax({
       type: 'get',
       url: 'article/getAllByBoardId' + queryString,
-      //回调
-      success: function (respData){
-        if(respData.code == 0){
-          //成功
+      success: function (respData) {
+        if (respData.code == 0) {
           listBuildArticleList(respData.data);
-        }else{
-          //失败
-          $.toast({
-            heading: '警告',
-            text: respData.message,
-            icon: 'warning'
-          });
         }
-      },
-      error: function (){
-        //提示信息
-        $.toast({
-          heading: '错误',
-          text: '访问出现问题,请与管理员联系.',
-          icon: 'error'
-        });
       }
     });
 
     // ========================= 构造帖子列表 =======================
     function listBuildArticleList(data) {
-      if(data.length == 0) {
-        $('#artical-items-body').html('还没有帖子');
+      if (data.length == 0) {
+        $('#artical-items-body').html(
+          '<div class="empty-list">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">'
+          + '<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>'
+          + '</svg>'
+          + '<h4>暂无帖子</h4>'
+          + '<p>快来发布第一篇帖子吧</p>'
+          + '</div>'
+        );
         return;
       }
-      // 默认头像路径
+      
       let avatarUrl = 'image/avatar01.jpeg';
-      // 遍历结果
+      
       data.forEach(article => {
-        // 设置默认头像
         if (!article.user.avatarUrl) {
           article.user.avatarUrl = avatarUrl;
         }
-        // 构造HTML
-        let articleHtmlStr = '<div>'
-          + ' <div class="row">'
-          + ' <div class="col-auto">'
-          + ' <span class="avatar" style="background-image: url(' + article.user.avatarUrl + ')"></span>'
-          + ' </div>'
-          + ' <div class="col">'
-          + ' <div class="text-truncate">'
-          + ' <a href="javascript:void(0);" class="article_list_a_title">'
-          + ' <strong>' + article.title + '</strong>'
-          + ' </a>'
-          + ' </div>'
-          + ' <div class="text-muted mt-2">'
-          + ' <div class="row">'
-          + ' <div class="col">'
-          + ' <ul class="list-inline list-inline-dots mb-0">'
-          + ' <li class="list-inline-item">'
-          + ' <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user"'
-          + ' width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"'
-          + ' fill="none" stroke-linecap="round" stroke-linejoin="round">'
-          + ' <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + ' <path d="M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>'
-          + ' <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>'
-          + ' </svg> '
+        
+        let articleHtml = '<div class="article-item">'
+          + '<div class="article-item-inner">'
+          + '<span class="avatar article-avatar" style="background-image: url(' + article.user.avatarUrl + ')"></span>'
+          + '<div class="article-content">'
+          + '<a href="javascript:void(0);" class="article-title article_list_a_title">' + article.title + '</a>'
+          + '<div class="article-meta">'
+          + '<span class="meta-author">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'
           + article.user.nickname
-          + ' </li>'
-          + ' <li class="list-inline-item">'
-          + ' <svg xmlns="http://www.w3.org/2000/svg"'
-          + ' class="icon icon-tabler icon-tabler-clock-edit" width="24" height="24"'
-          + ' viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"'
-          + ' stroke-linecap="round" stroke-linejoin="round">'
-          + ' <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + ' <path d="M21 12a9 9 0 1 0 -9.972 8.948c.32 .034 .644 .052 .972 .052"></path>'
-          + ' <path d="M12 7v5l2 2"></path>'
-          + ' <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z">'
-          + ' </path>'
-          + ' </svg> '
+          + '</span>'
+          + '<span class="meta-time">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
           + article.createTime
-          + ' </li>'
-          + ' </ul>'
-          + ' </div>'
-          + ' <div class="col-auto d-none d-md-inline">'
-          + ' <ul class="list-inline list-inline-dots mb-0">'
-          + ' <li class="list-inline-item">'
-          + ' <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye"'
-          + ' width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"'
-          + ' fill="none" stroke-linecap="round" stroke-linejoin="round">'
-          + ' <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + ' <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>'
-          + ' <path'
-          + ' d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7">'
-          + ' </path>'
-          + ' </svg> '
+          + '</span>'
+          + '</div>'
+          + '</div>'
+          + '<div class="article-stats">'
+          + '<span class="stat-item views">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
           + article.visitCount
-          + ' </li>'
-          + ' <li class="list-inline-item">'
-          + ' <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart"'
-          + ' width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"'
-          + ' fill="none" stroke-linecap="round" stroke-linejoin="round">'
-          + ' <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + ' <path'
-          + ' d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">'
-          + ' </path>'
-          + ' </svg> '
+          + '</span>'
+          + '<span class="stat-item likes">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
           + article.likeCount
-          + ' </li>'
-          + ' <li class="list-inline-item">'
-          + ' <svg xmlns="http://www.w3.org/2000/svg"'
-          + ' class="icon icon-tabler icon-tabler-message-circle" width="24" height="24"'
-          + ' viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"'
-          + ' stroke-linecap="round" stroke-linejoin="round">'
-          + ' <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + ' <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>'
-          + ' <path d="M12 12l0 .01"></path>'
-          + ' <path d="M8 12l0 .01"></path>'
-          + ' <path d="M16 12l0 .01"></path>'
-          + ' </svg> '
+          + '</span>'
+          + '<span class="stat-item replies">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>'
           + article.replyCount
-          + ' </li>'
-          + ' </ul>'
-          + ' </div>'
-          + ' </div>'
-          + ' </div>'
-          + ' </div>'
-          + ' </div>'
-          + ' </div>';
-        // 转为元素对象
-        let articleItem = $(articleHtmlStr);
-        // 获取标题的 a 标签
+          + '</span>'
+          + '</div>'
+          + '</div>'
+          + '</div>';
+        
+        let articleItem = $(articleHtml);
         let articleTitle = articleItem.find('.article_list_a_title');
-        // 处理标题点击事件
-        articleTitle.click(function() {
-          // 通过全局变量保存当前访问的帖子信息
+        
+        // 点击标题跳转详情
+        articleTitle.click(function (e) {
+          e.stopPropagation();
           currentArticle = article;
           removeNavActive();
-          $('#bit-forum-content').load('details.html');
+          $('#bit-forum-content').load('details.html', function() {
+            $('html, body').animate({ scrollTop: 0 }, 300);
+          });
         });
-        // 添加到列表
+        
+        // 点击整行也可跳转
+        articleItem.click(function () {
+          currentArticle = article;
+          removeNavActive();
+          $('#bit-forum-content').load('details.html', function() {
+            $('html, body').animate({ scrollTop: 0 }, 300);
+          });
+        });
+        
         $('#artical-items-body').append(articleItem);
       });
     }
 
     // ================== 处理发贴事件 =====================
     $('.article_post').click(function () {
-      console.log('加载发贴页面');
+      if (!currentUserId) {
+        $.toast({
+          heading: '提示',
+          text: '请先登录后再发布帖子',
+          icon: 'warning'
+        });
+        return;
+      }
       removeNavActive();
       $('#bit-forum-content').load('article.html');
     });
-
   });
 </script>

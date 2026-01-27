@@ -1,172 +1,53 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <link rel="shortcut icon" href="/favicon.ico">
-    <!-- 标题 -->
-    <title>码韵智汇栈 - 用户登录</title>
-    <!-- 导入CSS -->
-    <link href="./dist/css/tabler.min.css?1674944402" rel="stylesheet"/>
-    <link rel="stylesheet" href="./dist/css/jquery.toast.css">
-    <!-- 设置字体 -->
-    <!-- <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style> -->
-  </head>
-  <body class="d-flex flex-column">
-    <!-- 正文 -->
-    <div class="page page-center">
-        <div class="container container-normal py-4">
-          <div class="row align-items-center g-4">
-            <div class="col-lg">
-              <div class="container-tight">
-                <div class="text-center mb-4">
-                    <img src="./image/forum-logo01.png" height="50" alt="">
-                </div>
-                <div class="card card-md">
-                  <div class="card-body">
-                    <h2 class="text-center mb-4">用户登录</h2>
-                    <form id="signInForm" method="get" autocomplete="off" novalidate>
-                      <div class="mb-3">
-                        <label class="form-label required">用户名</label>
-                        <input type="text" class="form-control" placeholder="请输入用户名" autocomplete="off" name="username" id="username">
-                        <div class="invalid-feedback">用户名不能为空</div>
-                      </div>
-                      <div class="mb-2">
-                        <label class="form-label required">
-                          密码
-                          <!-- <span class="form-label-description">
-                            <a href="#">忘记密码</a>
-                          </span> -->
-                        </label>
-                        <div class="input-group input-group-flat">
-                          <input type="password" class="form-control"  placeholder="请输入密码"  autocomplete="off" name="password"
-                          id="password">
-                          <span class="input-group-text">
-                            <a href="javascript:void(0);" id="password_a" class="link-secondary" title="显示密码" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                            </a>
-                          </span>
-                          <div class="invalid-feedback">密码不能为空</div>
-                        </div>
-                      </div>
-                      <!-- <div class="mb-2">
-                        <label class="form-check">
-                          <input type="checkbox" class="form-check-input"/>
-                          <span class="form-check-label">记住我</span>
-                        </label>
-                      </div> -->
-                      <div class="form-footer">
-                        <button id="submit" type="button" class="btn btn-primary w-100">登录</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="text-center text-muted mt-3">
-                  还没有注册吗? <a href="./sign-up.html" tabindex="-1">点击注册</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg d-none d-lg-block">
-              <img src="./dist/illustrations/undraw_printing_invoices_5r4r.svg" height="300" class="d-block mx-auto" alt="">
-            </div>
-          </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <link rel="shortcut icon" href="favicon.ico">
+</head>
+<body style="margin:0;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;">
+    <div style="width:380px;background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.2);padding:35px;">
+        <div style="text-align:center;margin-bottom:20px;">
+            <img src="image/forum-logo01.png" alt="Logo" style="height:40px;">
         </div>
-      </div>
-  </body>
-  <!-- 导入JS -->
-  <script src="./dist/js/jquery-3.6.3.min.js"></script>
-  <script src="./dist/js/tabler.min.js"></script>
-  <script src="./dist/js/jquery.toast.js"></script>
-  <script>
-    $(function () {
-      // 获取控件
-      // 用户名
-      let usernameEl = $('#username');
-      let passwordEl = $('#password');
-      // 登录校验
-      $('#submit').click(function () {
-        let checkForm = true;
-        // 校验用户名
-        if (!usernameEl.val()) {
-          usernameEl.addClass('is-invalid');
-          checkForm = false;
-        }
-        // 校验密码
-        if (!passwordEl.val()) {
-          passwordEl.addClass('is-invalid');
-          checkForm = false;
-        }
-
-        // 根据判断结果提交表单
-        if (!checkForm) {
-          return false;
-        }
-
-        // 构造数据
-        let postData = {
-          username: usernameEl.val(),
-          password: passwordEl.val()
+        <h2 style="text-align:center;color:#333;margin:0 0 8px 0;font-size:20px;">用户登录</h2>
+        <p style="text-align:center;color:#888;font-size:13px;margin:0 0 25px 0;">欢迎回来</p>
+        <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:500;color:#333;margin-bottom:6px;">用户名</label>
+            <input type="text" id="username" placeholder="请输入用户名" style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:20px;">
+            <label style="display:block;font-size:13px;font-weight:500;color:#333;margin-bottom:6px;">密码</label>
+            <input type="password" id="password" placeholder="请输入密码" style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <button id="loginBtn" style="width:100%;padding:12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;">登录</button>
+        <div style="display:flex;align-items:center;margin:20px 0;color:#aaa;">
+            <div style="flex:1;height:1px;background:#e0e0e0;"></div>
+            <span style="padding:0 10px;font-size:12px;">或</span>
+            <div style="flex:1;height:1px;background:#e0e0e0;"></div>
+        </div>
+        <a href="index.html" style="display:block;width:100%;padding:10px;background:#fff;color:#666;border:1px solid #ddd;border-radius:8px;font-size:14px;text-align:center;text-decoration:none;box-sizing:border-box;">游客模式</a>
+        <p style="text-align:center;margin-top:20px;font-size:13px;color:#888;">没有账户？<a href="sign-up.html" style="color:#667eea;">立即注册</a></p>
+    </div>
+    <script>
+        document.getElementById('loginBtn').onclick = function() {
+            var u = document.getElementById('username').value;
+            var p = document.getElementById('password').value;
+            if (!u) { alert('请输入用户名'); return; }
+            if (!p) { alert('请输入密码'); return; }
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'user/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var res = JSON.parse(xhr.responseText);
+                    if (res.code === 0) { location.href = 'index.html'; }
+                    else { alert(res.message); }
+                } else { alert('请求失败'); }
+            };
+            xhr.send('username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p));
         };
-        
-        // 发送AJAX请求，成功后跳转到index.html
-        $.ajax({
-          type: 'post',
-          url: 'user/login',
-          contentType: 'application/x-www-form-urlencoded',
-          data: postData,
-          success: function (respData){
-            if(respData.code == 0){
-              location.assign('/index.html');
-            }else{
-              //提示信息
-              $.toast({
-                heading: '警告',
-                text: respData.message,
-                icon: 'warning'
-              });
-            }
-          },
-          error: function (){
-            //提示信息
-            $.toast({
-              heading: '错误',
-              text: '访问出现问题,请与管理员联系.',
-              icon: 'error'
-            });
-          }
-        });
-      });
-
-      //
-      // 表单元单独检验
-      $('#username, #password').on('blur', function () {
-        if ($(this).val()) {
-          $(this).removeClass('is-invalid');
-          $(this).addClass('is-valid');
-        } else {
-          $(this).removeClass('is-valid');
-          $(this).addClass('is-invalid');
-        }
-      });
-
-      // 显示密码
-      $('#password_a').click(function () {
-        if(passwordEl.attr('type') == 'password') {
-          passwordEl.attr('type', 'text');
-        } else {
-          passwordEl.attr('type', 'password');
-        }
-      });
-    });
-  </script>
+    </script>
+</body>
 </html>

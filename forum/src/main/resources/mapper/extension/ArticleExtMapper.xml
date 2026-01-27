@@ -11,6 +11,18 @@
                  columnPrefix="b_" />
    </resultMap>
 
+  <!-- 根据用户昵称和帖子标题查询帖子 -->
+  <select id="selectByNicknameAndTitle" resultMap="BaseResultMap">
+      select a.*
+      from t_article a
+      inner join t_user u on a.userId = u.id
+      where u.nickname = #{nickname,jdbcType=VARCHAR}
+      and a.title = #{title,jdbcType=VARCHAR}
+      and a.deleteState = 0
+      and u.deleteState = 0
+      limit 1
+  </select>
+
   <!-- 查询所有未被删除的帖子列表，不包含content -->
   <select id="selectAll" resultMap="AllInfoResultMap">
     select
@@ -71,7 +83,7 @@
     u.isAdmin as u_isAdmin,
     u.state as u_state,
     u.deleteState as u_deleteState,
-    b.id as b_id,
+    b.id as b_id,  
     b.name as b_name,
     b.state as b_state,
     b.deleteState as b_deleteState,
@@ -117,4 +129,86 @@
     and a.userId = #{userId,jdbcType=BIGINT}
     order by a.createTime desc
   </select>
+  <!-- 根据关键字搜索帖子 -->
+  <!-- 搜索范围：帖子标题(title)和帖子内容(content) -->
+  <!-- 使用LIKE模糊匹配，CONCAT拼接通配符% -->
+  <select id="selectByKeyword" resultMap="AllInfoResultMap" parameterType="java.lang.String">
+    select
+      u.id as u_id,
+      u.avatarUrl as u_avatarUrl,
+      u.nickname as u_nickname,
+      a.id,
+      a.boardId,
+      a.userId,
+      a.title,
+      a.visitCount,
+      a.replyCount,
+      a.likeCount,
+      a.state,
+      a.createTime,
+      a.updateTime
+    from
+      t_article a, t_user u
+    where
+      a.userId = u.id
+      and a.deleteState = 0
+      and (
+        a.title LIKE CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+        OR a.content LIKE CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+      )
+    order by a.createTime desc
+    limit 0, 50
+  </select>
+  <!-- 高级查询 -->
+  <select id="advancedSearch" resultMap="AllInfoResultMap">
+      SELECT 
+          a.*,
+          u.id as u_id, u.nickname as u_nickname, u.avatarUrl as u_avatarUrl,
+          b.id as b_id, b.name as b_name
+      FROM t_article a
+      LEFT JOIN t_user u ON a.userId = u.id
+      LEFT JOIN t_board b ON a.boardId = b.id
+      WHERE a.deleteState = 0
+      <choose>
+          <when test="searchType == 'or'">
+              <if test="(title != null and title != '') or (content != null and content != '') or (author != null and author != '')">
+                  AND (
+                      1=0
+                      <if test="title != null and title != ''">
+                          OR a.title LIKE CONCAT('%', #{title}, '%')
+                      </if>
+                      <if test="content != null and content != ''">
+                          OR a.content LIKE CONCAT('%', #{content}, '%')
+                      </if>
+                      <if test="author != null and author != ''">
+                          OR u.nickname LIKE CONCAT('%', #{author}, '%')
+                      </if>
+                  )
+              </if>
+          </when>
+          <otherwise>
+              <if test="title != null and title != ''">
+                  AND a.title LIKE CONCAT('%', #{title}, '%')
+              </if>
+              <if test="content != null and content != ''">
+                  AND a.content LIKE CONCAT('%', #{content}, '%')
+              </if>
+              <if test="author != null and author != ''">
+                  AND u.nickname LIKE CONCAT('%', #{author}, '%')
+              </if>
+          </otherwise>
+      </choose>
+      <if test="boardId != null">
+          AND a.boardId = #{boardId}
+      </if>
+      <if test="startDate != null and startDate != ''">
+          AND a.createTime >= #{startDate}
+      </if>
+      <if test="endDate != null and endDate != ''">
+          AND a.createTime &lt;= CONCAT(#{endDate}, ' 23:59:59')
+      </if>
+      ORDER BY a.createTime DESC
+  </select>
+
+
 </mapper>

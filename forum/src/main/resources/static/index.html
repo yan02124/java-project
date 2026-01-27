@@ -1,824 +1,2527 @@
 <!doctype html>
-
 <html lang="zh-CN">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="shortcut icon" href="/favicon.ico">
-  <title>码韵智汇栈</title>
-  <!-- 导入CSS -->
-  <link href="./dist/css/tabler.min.css?1674944402" rel="stylesheet" />
-  <link rel="stylesheet" href="./dist/css/jquery.toast.css">
-  <link rel="stylesheet" href="./dist/editor.md/css/editormd.min.css">
-  <!-- 设置字体 -->
-  <!-- <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <title>码韵智汇栈 - 技术交流社区</title>
+    <!-- 导入CSS -->
+    <link href="./dist/css/tabler.min.css?1674944402" rel="stylesheet" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css">
+    <link rel="stylesheet" href="./dist/editor.md/css/editormd.min.css">
+    <!-- 自定义样式 -->
+    <style>
+        /* ========== 主内容区域 ========== */
+        .main-content-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .content-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* ========== 页脚样式 ========== */
+        .footer-enhanced {
+            background: linear-gradient(135deg, #1a1c2e 0%, #2d3561 100%);
+            color: #fff;
+            padding: 40px 0 20px 0;
+            margin-top: 30px;
+        }
+        .footer-section h6 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        .footer-section ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+        .footer-section p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+        .footer-bottom span, .footer-bottom a {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+        }
+        .footer-bottom a:hover {
+            color: #fff;
+        }
+        
+        /* ========== 导航栏品牌 ========== */
+        .brand-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #206bc4;
+            margin-left: 5px;
+        }
+        
+        /* 夜间模式下的品牌文字颜色 */
+        [data-bs-theme="dark"] .brand-text {
+            color: #4dabf7 !important;
+        }
+        
+        /* ========== 页面背景 ========== */
+        .page-body-wrapper {
+            background: #f4f6fa;
+            min-height: calc(100vh - 200px);
+            padding: 20px 0;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- page 页面开始 -->
-  <div class="page">
+<!-- page 页面开始 -->
+<div class="page">
     <!-- 头部 导航 开始 -->
     <header class="navbar navbar-expand-md navbar-light d-print-none">
-      <div class="container-xl">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
-          aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- 导航左侧 logo 按钮 -->
-        <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="#">
-            <img src="./image/forum-logo.jpg" width="32" height="32" alt="Tabler" class="navbar-brand-image me-3">
-          </a>
-        </h1>
-        <!-- 导航右侧 -->
-        <div class="navbar-nav flex-row order-md-last">
-          <!-- 搜索框 -->
-          <div class="nav-item d-none d-md-flex me-3">
-            <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-              <form action="./" method="get" autocomplete="off" novalidate>
-                <div class="input-icon">
-                  <span class="input-icon-addon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                      stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                      <path d="M21 21l-6 -6" />
-                    </svg>
-                  </span>
-                  <input type="text" value="" class="form-control" placeholder="输入关键字..."
-                    aria-label="Search in website">
+        <div class="container-xl">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
+                    aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 导航左侧 logo 按钮 -->
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <a href="#" class="d-flex align-items-center text-decoration-none">
+                    <img src="./image/forum-logo.jpg" width="32" height="32" alt="Logo" class="navbar-brand-image">
+                    <!-- <span class="brand-text d-none d-md-inline">码韵智汇栈</span> -->
+                </a>
+            </h1>
+            <!-- 导航右侧 -->
+            <div class="navbar-nav flex-row order-md-last">
+                <!-- 搜索框 -->
+                <div class="nav-item d-none d-md-flex me-3">
+                    <form action="javascript:void(0);" autocomplete="off" novalidate>
+                        <div class="input-group">
+                            <span class="input-group-text" id="searchIconBtn" style="cursor: pointer;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                <path d="M21 21l-6 -6" />
+                                </svg>
+                            </span>
+                            <input type="text" id="searchKeyword" class="form-control" placeholder="搜索帖子..." aria-label="Search" readonly style="cursor: pointer; background: #fff;">
+                            <a href="javascript:void(0);" class="btn btn-primary" id="btn_open_adv_search">
+                                高级查询
+                            </a>
+                        </div>
+                    </form>
                 </div>
-              </form>
-            </div>
-          </div>
-          <!-- 主题样式日夜转换 -->
-          <div class="d-none d-md-flex">
-            <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="切换至夜间模式" data-bs-toggle="tooltip"
-              data-bs-placement="bottom">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-              </svg>
-            </a>
-            <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="切换至白天模式" data-bs-toggle="tooltip"
-              data-bs-placement="bottom">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-              </svg>
-            </a>
+                <!-- 主题样式日夜转换 -->
+                <div class="d-none d-md-flex">
+                    <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="切换至夜间模式" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+                        </svg>
+                    </a>
+                    <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="切换至白天模式" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+                        </svg>
+                    </a>
 
-            <!-- 小铃铛，站内信 -->
-            <div class="nav-item dropdown d-none d-md-flex me-3">
-              <a class="nav-link px-0" data-bs-toggle="offcanvas" href="#index_message_offcanvasEnd" aria-controls="offcanvasEnd">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-                <!-- 小红点 -->
-                <span class="badge bg-red" id="index_nva_message_badge" style="display: none;"></span>
-              </a>
-            </div>
-          </div>
+                    <!-- 小铃铛，站内信 -->
+                    <div class="nav-item dropdown d-none d-md-flex me-3">
+                        <a class="nav-link px-0" data-bs-toggle="offcanvas" href="#index_message_offcanvasEnd" aria-controls="offcanvasEnd">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                            <!-- 小红点 -->
+                            <span class="badge bg-red" id="index_nva_message_badge" style="display: none;"></span>
+                        </a>
+                    </div>
+                </div>
 
-          <!-- 用户信息 -->
-          <div class="nav-item dropdown">
-            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
-              aria-label="Open user menu">
-              <!-- 用户头像，也可以用img标签 -->
-              <span id="index_nav_avatar" class="avatar avatar-sm"
-                style="background-image: url(./image/avatar01.jpeg)"></span>
-              <div class="d-none d-xl-block ps-2">
-                <!-- 用户名 -->
-                <div id="index_nav_nickname"></div>
-                <!-- 副标题 -->
-                <div id="index_nav_name_sub" class="mt-1 small text-muted"></div>
-              </div>
-            </a>
-            <!-- 下拉菜单 -->
-            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <a href="javascript:void(0);" id="index_user_profile" class="dropdown-item">我的帖子</a>
-              <a href="javascript:void(0);" id="index_user_settings" class="dropdown-item">个人中心</a>
-              <!-- <a href="#" class="dropdown-item">状态</a> -->
-              <!-- <a href="#" class="dropdown-item">生成二唯码</a> -->
-              <div class="dropdown-divider"></div>
-              <a id="index_user_logout" href="javascript:void(0);" class="dropdown-item"><span
-                  class="text-red">退出</span></a>
+                <!-- 用户信息 -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                       aria-label="Open user menu">
+                        <!-- 用户头像，也可以用img标签 -->
+                        <span id="index_nav_avatar" class="avatar avatar-sm"
+                              style="background-image: url(./image/avatar01.jpeg)"></span>
+                        <div class="d-none d-xl-block ps-2">
+                            <!-- 用户名 -->
+                            <div id="index_nav_nickname"></div>
+                            <!-- 副标题 -->
+                            <div id="index_nav_name_sub" class="mt-1 small text-muted"></div>
+                        </div>
+                    </a>
+                    <!-- 下拉菜单 -->
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <!-- 游客登录提示 -->
+                        <div id="guest_login_tip" style="display: none;">
+                            <a href="sign-in.html" class="dropdown-item text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                    <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>
+                                </svg>
+                                登录
+                            </a>
+                            <a href="sign-up.html" class="dropdown-item text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                    <path d="M16 19h6"></path>
+                                    <path d="M19 16v6"></path>
+                                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                </svg>
+                                注册
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item text-muted small">游客模式：仅可浏览</div>
+                        </div>
+                        <!-- 已登录用户菜单 -->
+                        <div id="user_dropdown_menu">
+                            <a href="javascript:void(0);" id="index_user_profile" class="dropdown-item">我的帖子</a>
+                            <a href="javascript:void(0);" id="index_user_settings" class="dropdown-item">个人中心</a>
+                            <a href="javascript:void(0);" id="index_admin_center" class="dropdown-item" style="display: none;">管理中心</a>
+                            <div class="dropdown-divider"></div>
+                            <a id="index_user_logout" href="javascript:void(0);" class="dropdown-item"><span class="text-red">退出</span></a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </header>
 
     <!-- 论坛版块导航 -->
     <header class="navbar-expand-md">
-      <div class="collapse navbar-collapse" id="navbar-menu">
-        <div class="navbar navbar-light">
-          <div class="container-xl">
-            <ul id="topBoardList" class="navbar-nav">
-              <li class="nav-item active" id="nav_board_index">
-                <!-- 首页 -->
-                <a class="nav-link" href="javascript:void(0);">
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <div class="navbar navbar-light">
+                <div class="container-xl">
+                    <ul id="topBoardList" class="navbar-nav">
+                        <li class="nav-item active" id="nav_board_index">
+                            <!-- 首页 -->
+                            <a class="nav-link" href="javascript:void(0);">
                   <span
-                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                          class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                      stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path
-                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                              d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
                     </svg>
                   </span>
-                  <span class="nav-link-title">
+                                <span class="nav-link-title">
                     首页
                   </span>
-                </a>
-              </li>
-              <!-- 其他版块动态生成 -->
-            </ul>
-          </div>
+                            </a>
+                        </li>
+                        <!-- 其他版块动态生成 -->
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
     </header>
     <!-- 头部 导航 结束 -->
-    <!-- 正文 开始 -->
-    <div class="page-wrapper" id="page-wrapper">
-      <!-- 正文部分动态加载 -->
-      <div id="bit-forum-content">
-        <!-- 动态的添加HTML代码片段 -->
-      </div>
-      
-      <!-- 站内信区域 开始 -->
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="index_message_offcanvasEnd" aria-labelledby="offcanvasEndLabel" style="width: 650px">
+
+    <!-- ========== 主体内容区域 ========== -->
+    <div class="page-body-wrapper">
+        <div class="container-xl">
+            <div class="row">
+                <!-- 主内容区 -->
+                <div class="col-12">
+                    <div class="main-content-card">
+                        <!-- 正文部分动态加载 -->
+                        <div id="bit-forum-content">
+                            <!-- 动态的添加HTML代码片段 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- page-wrapper 保留用于兼容 -->
+    <div class="page-wrapper d-none" id="page-wrapper"></div>
+
+    <!-- 站内信区域 开始 -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="index_message_offcanvasEnd" aria-labelledby="offcanvasEndLabel" style="width: 650px">
         <div class="offcanvas-header">
-          <h2 class="offcanvas-title" id="offcanvasEndLabel">所有站内信</h2>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h2 class="offcanvas-title" id="offcanvasEndLabel">所有站内信</h2>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body" id="index_div_message">
-          <div class="list-group list-group-flush list-group-hoverable" id="index_div_message_list">
-            <!-- 站内信列表开始 动态加载 -->
-            
-            <!-- 站内信列表结束 -->
-          </div>
+            <div class="list-group list-group-flush list-group-hoverable" id="index_div_message_list">
+                <!-- 站内信列表开始 动态加载 -->
+                <!-- 站内信列表结束 -->
+            </div>
         </div>
-      </div>
-      <!-- 站内信区域 结束 -->
-      <!-- 页脚 开始 -->
-      <footer class="footer footer-transparent d-print-none align-self-center">
+    </div>
+    <!-- 站内信区域 结束 -->
+
+    <!-- ========== 页脚 ========== -->
+    <footer class="footer footer-enhanced d-print-none">
         <div class="container-xl">
-          <div class="row text-center align-items-center">
-            <div class="col-lg-auto ms-lg-auto">
-              <ul class="list-inline list-inline-dots mb-0">
-                <li class="list-inline-item">
-                  Copyright &copy; 2025
-                  <a href="#" class="link-secondary">码韵智汇栈</a>
-                  版权所有
-                </li>
-                <li class="list-inline-item">
-                  <a href="https://gitee.com/yan-xiaochen/java-project.git" class="link-secondary">
-                    GITEE
-                  </a>
-                </li>
-              </ul>
+            <div class="row">
+                <div class="col-md-4 footer-section">
+                    <h6>🏠 关于我们</h6>
+                    <p>码韵智汇栈是一个面向开发者的技术交流社区，致力于为程序员提供一个分享知识、交流经验、共同成长的平台。我们相信技术的力量，期待与你一起探索代码的无限可能。</p>
+                </div>
+                <div class="col-md-2 footer-section">
+                    <h6>🔗 快速链接</h6>
+                    <ul>
+                        <li><a href="javascript:void(0);" id="footer_link_home">首页</a></li>
+                        <li><a href="javascript:void(0);" id="footer_link_profile">我的帖子</a></li>
+                        <li><a href="javascript:void(0);" id="footer_link_settings">个人中心</a></li>
+                        <li><a href="javascript:void(0);">帮助中心</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h6>📂 热门板块</h6>
+                    <ul id="footer_hot_boards">
+                        <li><a href="javascript:void(0);">Java</a></li>
+                        <li><a href="javascript:void(0);">前端技术</a></li>
+                        <li><a href="javascript:void(0);">数据库</a></li>
+                        <li><a href="javascript:void(0);">经验分享</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h6>⚙️ 技术栈</h6>
+                    <ul>
+                        <li><a href="javascript:void(0);">Spring Boot 2.x</a></li>
+                        <li><a href="javascript:void(0);">MyBatis</a></li>
+                        <li><a href="javascript:void(0);">MySQL 8.0</a></li>
+                        <li><a href="javascript:void(0);">Tabler UI</a></li>
+                    </ul>
+                </div>
             </div>
-          </div>
+            <div class="row footer-bottom">
+                <div class="col-md-6">
+                    <span>Copyright © 2025 码韵智汇栈 版权所有</span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="https://gitee.com/yan-xiaochen/java-project.git" class="me-3" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg>
+                        Gitee
+                    </a>
+                    <span>基于 Spring Boot + MyBatis 构建</span>
+                </div>
+            </div>
         </div>
-        <!-- 页脚 结束 -->
-      </footer>
-    </div>
-
     <!-- page 页面结束 -->
-  </div>
+</div>
 
-  <!-- 发送站内信模态框 -->
-  <div class="modal modal-blur fade" id="index_message_modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">发送站内信</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12">
-              <div>
-                <input type="text" style="display: none;" id="index_message_receive_user_id">
-                <label class="form-label" id="index_message_receive_user_name">发送给: </label>
-                <textarea class="form-control" rows="5" id="index_message_receive_content"></textarea>
-              </div>
+<!-- 搜索弹窗 -->
+<div class="modal modal-blur fade" id="search_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 16px; overflow: hidden; border: none; box-shadow: 0 25px 50px rgba(0,0,0,0.25);">
+            <div class="modal-body p-0">
+                <!-- 搜索输入区 -->
+                <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text" style="background: white; border: none; border-radius: 12px 0 0 12px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="#667eea" fill="none">
+                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                <path d="M21 21l-6 -6"></path>
+                            </svg>
+                        </span>
+                        <input type="text" id="search_modal_input" class="form-control" placeholder="输入关键字搜索帖子..." style="border: none; font-size: 16px; padding: 12px 16px;" autofocus>
+                        <button class="btn btn-light" type="button" id="btn_search_modal_submit" style="border: none; border-radius: 0 12px 12px 0; padding: 0 20px;">
+                            搜索
+                        </button>
+                    </div>
+                    <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="color: rgba(255,255,255,0.7); font-size: 13px;">热门搜索：</span>
+                        <a href="javascript:void(0);" class="hot-search-tag" data-keyword="Java">Java</a>
+                        <a href="javascript:void(0);" class="hot-search-tag" data-keyword="面试">面试</a>
+                        <a href="javascript:void(0);" class="hot-search-tag" data-keyword="Spring">Spring</a>
+                        <a href="javascript:void(0);" class="hot-search-tag" data-keyword="MySQL">MySQL</a>
+                        <a href="javascript:void(0);" class="hot-search-tag" data-keyword="前端">前端</a>
+                    </div>
+                </div>
+                <!-- 搜索提示 -->
+                <div style="padding: 16px 20px; background: #f8f9fa; border-top: 1px solid #eee;">
+                    <div style="display: flex; align-items: center; gap: 8px; color: #888; font-size: 13px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4"></path>
+                            <path d="M12 8h.01"></path>
+                        </svg>
+                        <span>按 <kbd style="background: #e9ecef; padding: 2px 6px; border-radius: 4px; font-size: 12px;">Enter</kbd> 搜索，按 <kbd style="background: #e9ecef; padding: 2px 6px; border-radius: 4px; font-size: 12px;">Esc</kbd> 关闭</span>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="modal-footer">
-          <a href="javascript:void(0);" class="btn me-auto" data-bs-dismiss="modal" id="index_message_receive_cancel">
-            取消
-          </a>
-          <a href="javascript:void(0);" class="btn btn-primary ms-auto" data-bs-dismiss="modal" id="btn_index_send_message">
-            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M10 14l11 -11"></path>
-              <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
-           </svg>
-            发送
-          </a>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+<style>
+    .hot-search-tag {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .hot-search-tag:hover {
+        background: rgba(255,255,255,0.35);
+        color: white;
+        transform: translateY(-1px);
+    }
+    #search_modal .modal-content {
+        animation: searchModalIn 0.2s ease;
+    }
+    @keyframes searchModalIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
 
-  <!-- 阅读和回复站内信模态框 -->
-  <div class="modal modal-blur fade" id="index_message_reply_modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="index_message_detail_title">站内信详情</h5>
-          <input type="text" style="display: none;" id="index_message_detail_id">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12">
-              <div>
-                <p id="index_message_detail_content"></p>
-              </div>
+<!-- 管理员-管理中心入口弹窗 -->
+<div class="modal modal-blur fade" id="admin_board_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                    </svg>
+                    管理中心
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-        </div>
-        <div class="modal-body" style="display: none;" id="index_message_reply_div">
-          <div class="row">
-            <div class="col-lg-12">
-              <div>
-                <input type="text" style="display: none;" id="index_message_reply_receive_user_id">
-                <label class="form-label" id="index_message_reply_receive_user_name">回复给: </label>
-                <textarea class="form-control" rows="5" id="index_message_reply_receive_content" placeholder="请输入回复内容"></textarea>
-              </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- 新增板块 -->
+                    <div class="col-6">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#admin_create_board_modal" data-bs-dismiss="modal">
+                            <div class="card-body text-center py-4">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus text-primary" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M5 12l14 0"></path>
+                                    </svg>
+                                </div>
+                                <div class="fw-bold">新增板块</div>
+                                <div class="text-muted small">创建新的讨论板块</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 删除板块 -->
+                    <div class="col-6">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#admin_delete_board_modal" data-bs-dismiss="modal">
+                            <div class="card-body text-center py-4">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-folder-minus text-danger" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"></path>
+                                        <path d="M9 13l6 0"></path>
+                                    </svg>
+                                </div>
+                                <div class="fw-bold">删除板块</div>
+                                <div class="text-muted small">移除现有板块</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 删除帖子 -->
+                    <div class="col-6">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#admin_delete_article_modal" data-bs-dismiss="modal">
+                            <div class="card-body text-center py-4">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-orange" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                </div>
+                                <div class="fw-bold">删除帖子</div>
+                                <div class="text-muted small">删除违规帖子</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 用户管理 -->
+                    <div class="col-6">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#admin_user_manage_modal" data-bs-dismiss="modal">
+                            <div class="card-body text-center py-4">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-exclamation text-warning" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.008 .128"></path>
+                                        <path d="M19 16v3"></path>
+                                        <path d="M19 22v.01"></path>
+                                    </svg>
+                                </div>
+                                <div class="fw-bold">用户管理</div>
+                                <div class="text-muted small">禁言/解禁用户</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">关闭</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <a href="javascript:void(0);" class="btn me-auto" data-bs-dismiss="modal" id="index_message_reply_cancel">
-            取消
-          </a>
-          <a href="javascript:void(0);" class="btn btn-primary ms-auto" id="btn_index_message_reply">
-            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M8 9h8"></path>
-              <path d="M8 13h6"></path>
-              <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"></path>
-           </svg>
-            回复
-          </a>
-          <a href="javascript:void(0);" class="btn btn-primary ms-auto" data-bs-dismiss="modal" id="btn_index_send_message_reply" style="display: none;">
-            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M10 14l11 -11"></path>
-              <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
-           </svg>
-            发送
-          </a>
-        </div>
-      </div>
     </div>
-  </div>
-</body>
-<!-- 导入JS -->
-<script src="./dist/js/tabler.min.js"></script>
-<script src="./dist/js/theme.min.js"></script>
-<script src="./dist/js/jquery-3.6.3.min.js"></script>
-<script src="./dist/js/jquery.toast.js"></script>
-<script src="./js/common.js"></script>
-<!-- 编辑器 -->
-<script src="./dist/editor.md/editormd.min.js"></script>
-<script src="./dist/editor.md/lib/marked.min.js"></script>
-<script src="./dist/editor.md/lib/prettify.min.js"></script>
-<script src="./dist/libs/tinymce/tinymce.min.js" defer></script>
-<script>
-  $(function () {
-    //========================= 获取用户信息 =======================
-    // 成功后，手动设置用户信息
-    // $('#index_nav_avatar').css('background-image', 'url(' + user.avatarUrl + ')');
-    $.ajax({
-      //请求的方法
-      type: 'get',
-      //没有参数,表示获取当前登录用户的信息
-      url: 'user/info',
-      //成功回调
-      success: function (respData){
-        //判断响应的状态码
-        if(respData.code == 0){
-          //设置页面用户的信息
-          let user = respData.data;
-          //判断用户头像是否有效
-          if(!user.avatarUrl){
-            //设置默认的头像地址
-            user.avatarUrl = avatarUrl;
-          }
-          //设置页面上的头像
-          $('#index_nav_avatar').css('background-image', 'url(' + user.avatarUrl + ')');
-          //设置用户昵称
-          $('#index_nav_nickname').html(user.nickname);
-          //设置用户组
-          let subName = user.isAdmin == 1 ? '管理员' : '普通用户';
-          $('#index_nav_name_sub').html(subName);
-        }else{
-          //提示信息
-          $.toast({
-            heading: '警告',
-            text: respData.message,
-            icon: 'warning'
-          });
-        }
-      },
-      //失败回调
-      error: function (){
-        //提示信息
-        $.toast({
-          heading: '错误',
-          text: '访问出现问题,请与管理员联系.',
-          icon: 'error'
-        });
-      }
-    });
+</div>
 
-    // ========================= 获取版块信息 =======================
-    // 成功后，调用buildTopBoard()方法，构建版块列表
-    $.ajax({
-      type: 'get',
-      url: 'board/topList',
-      success: function (respData){
-        if(respData.code == 0){
-          //构建板块列表
-          buildTopBoard(respData.data);
-        }else{
-          //提示信息
-          $.toast({
-            heading: '警告',
-            text: respData.message,
-            icon: 'warning'
-          });
-        }
-      },
-      error: function (){
-        //提示信息
-        $.toast({
-          heading: '错误',
-          text: '访问出现问题,请与管理员联系.',
-          icon: 'error'
-        });
-      }
-    });
+<!-- 管理员-新增板块弹窗 -->
+<div class="modal modal-blur fade" id="admin_create_board_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    新增板块
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">板块名称 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="admin_board_name" placeholder="请输入板块名称">
+                    <div class="form-text">板块名称将显示在导航栏中</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-primary" type="button" id="btn_admin_create_board">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    创建板块
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    //========================= 构造首页版块=======================
-    // 构造首页版块
-    function buildTopBoard(data) {
-      // 版块导航
-      let navBoardListEl = $('#topBoardList');
-      // 遍历版块
-      data.forEach(board => {
-        // 构建版块
-        let itemHtml = '<li class="nav-item">'
-          + '<a class="nav-link" href="javascript:void(0);">'
-          + '<span class="nav-link-icon d-md-none d-lg-inline-block">'
-          + '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point-filled" width="24"'
-          + 'height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"'
-          + 'stroke-linecap="round" stroke-linejoin="round">'
-          + '<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
-          + '<path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z"'
-          + 'stroke-width="0" fill="currentColor"></path>'
-          + '</svg>'
-          + '</span>'
-          + '<span class="nav-link-title">'
-          + board.name
-          + '</span>'
-          + '</a>'
-          + '</li>'
-        // 为版块绑定当前版块数据对象以便后续获取
-        let boardItem = $(itemHtml);
-        // 把版块信息绑定到当前导航单元
-        boardItem.data('board', board);
-        console.log('data = ' + boardItem.data('board').name + ', id = ' + boardItem.data('board').id);
-        // 处理点击事件
-        boardItem.click(function () {
-          // alert('data = ' + boardItem.data('board').name + ', id = ' + boardItem.data('board').id);
-          // 激活效果
-          changeNavActive(boardItem);
-        });
-        // 加入版块导航
-        navBoardListEl.append(boardItem);
-      });
-    }
+<!-- 管理员-删除板块弹窗 -->
+<div class="modal modal-blur fade" id="admin_delete_board_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"></path><path d="M9 13l6 0"></path></svg>
+                    删除板块
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
+                    删除板块后，该板块下的所有帖子将被移至默认板块
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">选择要删除的板块 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="admin_board_delete_select">
+                        <option value="">请选择要删除的板块</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-danger" type="button" id="btn_admin_delete_board">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                    确认删除
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // ========================= 绑定导航栏中首页点击事件 =======================
-    $('#nav_board_index').click(function () {
-      // 激活效果
-      changeNavActive($(this));
-    });
+<!-- 管理员-删除帖子弹窗 -->
+<div class="modal modal-blur fade" id="admin_delete_article_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-orange text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                    删除帖子
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
+                    删除帖子后将无法恢复，请谨慎操作
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">选择要删除的帖子 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="admin_article_delete_select">
+                        <option value="">请选择要删除的帖子</option>
+                    </select>
+                    <div class="form-text">显示格式：[作者] 帖子标题</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-danger" type="button" id="btn_admin_delete_article">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
+                    确认删除
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 管理员-用户管理弹窗 -->
+<div class="modal modal-blur fade" id="admin_user_manage_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path><path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.008 .128"></path><path d="M19 16v3"></path><path d="M19 22v.01"></path></svg>
+                    用户管理
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
+                    禁言用户将无法发帖和回复，解禁后恢复正常
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">选择要禁言的用户</label>
+                    <select class="form-select" id="admin_ban_user_select">
+                        <option value="">请选择要禁言的用户</option>
+                    </select>
+                    <div class="form-text">显示所有正常状态的用户</div>
+                </div>
+                <div class="d-grid mb-4">
+                    <button class="btn btn-danger" type="button" id="btn_admin_ban_user">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602a5 5 0 0 1 -.535 .464"></path><path d="M17.7 5a9 9 0 0 1 2.362 11.086m-1.676 2.299a9 9 0 0 1 -.686 .615"></path><path d="M9.069 5.054l.431 -.554a.8 .8 0 0 1 1.5 .5v2m0 4v8a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l1.294 -1.664"></path><path d="M3 3l18 18"></path></svg>
+                        禁言用户
+                    </button>
+                </div>
+                <hr class="my-3">
+                <div class="mb-3">
+                    <label class="form-label">选择要解禁的用户</label>
+                    <select class="form-select" id="admin_unban_user_select">
+                        <option value="">请选择要解禁的用户</option>
+                    </select>
+                    <div class="form-text">显示所有已禁言的用户</div>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-success" type="button" id="btn_admin_unban_user">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 8a5 5 0 0 1 0 8"></path><path d="M17.7 5a9 9 0 0 1 0 14"></path><path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"></path></svg>
+                        解禁用户
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // ========================= 起始页而加载首页帖子列表 ========================= 
-    buildArticleList();
+<!-- 高级查询入口弹窗 -->
+<div class="modal modal-blur fade" id="advanced_search_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                        <path d="M21 21l-6 -6"></path>
+                    </svg>
+                    高级查询中心
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- 多条件交叉查询 -->
+                    <div class="col-12">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#multi_condition_search_modal" data-bs-dismiss="modal">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-filter text-primary" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">多条件交叉查询</div>
+                                        <div class="text-muted small">支持标题、内容、作者、板块、日期等多条件组合，可选AND/OR模式</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 模糊查询 -->
+                    <div class="col-12">
+                        <div class="card card-sm cursor-pointer admin-func-card" data-bs-toggle="modal" data-bs-target="#fuzzy_search_modal" data-bs-dismiss="modal">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-text-recognition text-success" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 8v-2a2 2 0 0 1 2 -2h2"></path>
+                                            <path d="M4 16v2a2 2 0 0 0 2 2h2"></path>
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+                                            <path d="M16 20h2a2 2 0 0 0 2 -2v-2"></path>
+                                            <path d="M12 8l4 8"></path>
+                                            <path d="M8 8l4 8"></path>
+                                            <path d="M9 13h6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">模糊查询</div>
+                                        <div class="text-muted small">输入关键字，在标题和内容中进行模糊匹配搜索</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 结果中查询 -->
+                    <div class="col-12">
+                        <div class="card card-sm cursor-pointer admin-func-card" id="card_search_in_result" data-bs-toggle="modal" data-bs-target="#search_in_result_modal" data-bs-dismiss="modal">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-search text-orange" width="48" height="48" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M15 15m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                            <path d="M18.5 18.5l2.5 2.5"></path>
+                                            <path d="M4 6h16"></path>
+                                            <path d="M4 12h4"></path>
+                                            <path d="M4 18h4"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">结果中查询</div>
+                                        <div class="text-muted small">在当前搜索结果中继续筛选，逐步缩小范围</div>
+                                        <div class="text-muted small" id="current_result_count_tip"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 多条件交叉查询弹窗 -->
+<div class="modal modal-blur fade" id="multi_condition_search_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"></path></svg>
+                    多条件交叉查询
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
+                    支持多个条件组合查询，AND模式要求所有条件都满足，OR模式只需满足任一条件
+                </div>
+                <!-- 标题关键字 -->
+                <div class="mb-3">
+                    <label class="form-label">标题关键字</label>
+                    <input type="text" class="form-control" id="adv_search_title" placeholder="输入标题关键字">
+                </div>
+                <!-- 内容关键字 -->
+                <div class="mb-3">
+                    <label class="form-label">内容关键字</label>
+                    <input type="text" class="form-control" id="adv_search_content" placeholder="输入内容关键字">
+                </div>
+                <!-- 作者昵称 -->
+                <div class="mb-3">
+                    <label class="form-label">作者昵称</label>
+                    <input type="text" class="form-control" id="adv_search_author" placeholder="输入作者昵称">
+                </div>
+                <!-- 所属板块 -->
+                <div class="mb-3">
+                    <label class="form-label">所属板块</label>
+                    <select class="form-select" id="adv_search_board">
+                        <option value="">全部板块</option>
+                    </select>
+                </div>
+                <!-- 日期范围 -->
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">开始日期</label>
+                        <input type="date" class="form-control" id="adv_search_start_date">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">结束日期</label>
+                        <input type="date" class="form-control" id="adv_search_end_date">
+                    </div>
+                </div>
+                <!-- 查询方式 -->
+                <div class="mb-3">
+                    <label class="form-label">查询方式</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="search_type" id="search_type_and" value="and" checked>
+                        <label class="btn btn-outline-primary" for="search_type_and">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"></path><path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"></path></svg>
+                            全部满足 (AND)
+                        </label>
+                        <input type="radio" class="btn-check" name="search_type" id="search_type_or" value="or">
+                        <label class="btn btn-outline-success" for="search_type_or">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 17h5l1.67 -2.386m3.66 -5.227l1.67 -2.387h5"></path><path d="M3 7h5l7 10h5"></path></svg>
+                            任意满足 (OR)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn_multi_search_reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></svg>
+                    重置
+                </button>
+                <button class="btn btn-primary" type="button" id="btn_multi_search">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    开始查询
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // ============================ 处理个设置心点击事件 ===========================
-    $('#index_user_settings').click(function () {
-      console.log('加载设置中心页面');
-      removeNavActive();
-      $('#bit-forum-content').load('settings.html');
-    });
+<!-- 模糊查询弹窗 -->
+<div class="modal modal-blur fade" id="fuzzy_search_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 8v-2a2 2 0 0 1 2 -2h2"></path><path d="M4 16v2a2 2 0 0 0 2 2h2"></path><path d="M16 4h2a2 2 0 0 1 2 2v2"></path><path d="M16 20h2a2 2 0 0 0 2 -2v-2"></path><path d="M12 8l4 8"></path><path d="M8 8l4 8"></path><path d="M9 13h6"></path></svg>
+                    模糊查询
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
+                    输入关键字，系统将在帖子标题和内容中进行模糊匹配
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">搜索关键字 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg" id="fuzzy_search_keyword" placeholder="请输入要搜索的关键字">
+                    <div class="form-text">支持部分匹配，例如输入"Java"可以匹配到"JavaScript"、"Java开发"等</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">搜索范围</label>
+                    <div class="form-selectgroup">
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="fuzzy_scope" value="title" class="form-selectgroup-input" checked>
+                            <span class="form-selectgroup-label">标题</span>
+                        </label>
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="fuzzy_scope" value="content" class="form-selectgroup-input" checked>
+                            <span class="form-selectgroup-label">内容</span>
+                        </label>
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="fuzzy_scope" value="author" class="form-selectgroup-input">
+                            <span class="form-selectgroup-label">作者</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-success" type="button" id="btn_fuzzy_search">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    搜索
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // ============================ 处理个人中心点击事件 ===========================
-    $('#index_user_profile').click(function () {
-      console.log('加载个人中心页面');
-      removeNavActive();
-      // 清空要查看的用户Id，表示要查看的是自己
-      profileUserId = undefined;
-      // 加载个人帖子列表
-      $('#bit-forum-content').load('profile.html');
-    });
+<!-- 结果中查询弹窗 -->
+<div class="modal modal-blur fade" id="search_in_result_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-orange text-white">
+                <h5 class="modal-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 15m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M18.5 18.5l2.5 2.5"></path><path d="M4 6h16"></path><path d="M4 12h4"></path><path d="M4 18h4"></path></svg>
+                    结果中查询
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert" id="result_search_alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
+                    <span id="result_search_tip">当前没有搜索结果，请先进行一次查询</span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">在结果中搜索 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="result_search_keyword" placeholder="输入关键字在当前结果中筛选">
+                    <div class="form-text">将在当前 <span id="current_result_count" class="fw-bold text-primary">0</span> 条结果中进行筛选</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">筛选字段</label>
+                    <div class="form-selectgroup">
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="result_scope" value="title" class="form-selectgroup-input" checked>
+                            <span class="form-selectgroup-label">标题</span>
+                        </label>
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="result_scope" value="content" class="form-selectgroup-input" checked>
+                            <span class="form-selectgroup-label">内容</span>
+                        </label>
+                        <label class="form-selectgroup-item">
+                            <input type="checkbox" name="result_scope" value="author" class="form-selectgroup-input">
+                            <span class="form-selectgroup-label">作者</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-orange" type="button" id="btn_search_in_result">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    筛选
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // ============================ 处理退出登录点击事件 ===========================
-    // 成功后，跳转到sign-in.html
-    $('#index_user_logout').click(function () {
-      $.ajax({
-        type: 'get',
-        url: 'user/logout',
-        complete: function (){
-          //当前请求完成时,不论成功与失败都跳转到登录页面
-          location.assign('/sign-in.html');
-        }
-      });
-    });
+<!-- 发送站内信模态框 -->
+    <div class="modal modal-blur fade" id="index_message_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">发送站内信</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-    // ============ 发送站内信 ==============
-    $('#btn_index_send_message').click(function() {
-      // 获取输入内容
-      let receiveUserIdEl = $('#index_message_receive_user_id');
-      let messageContentEl = $('#index_message_receive_content');
-      // 校验
-      if (!receiveUserIdEl.val()) {
-        $.toast({
-            heading: '警告',
-            text: '出错了，请联系管理员',
-            icon: 'warning'
-          });
-          return;
-      }
-      if (!messageContentEl.val()) {
-        $.toast({
-          heading: '警告',
-          text: '请输入要发送的内容',
-          icon: 'warning'
-        });
-        // 输入框
-        messageContentEl.focus();
-        retrun;
-      }
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                <input type="text" style="display: none;" id="index_message_receive_user_id">
+                                <label class="form-label" id="index_message_receive_user_name">发送给: </label>
+                                <textarea class="form-control" rows="5" id="index_message_receive_content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn me-auto" data-bs-dismiss="modal" id="index_message_receive_cancel">
+                        取消
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary ms-auto" data-bs-dismiss="modal" id="btn_index_send_message">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M10 14l11 -11"></path>
+                            <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                        </svg>
+                        发送
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      // 构造发送数据
-      let postData = {
-        receiveUserId : receiveUserIdEl.val(),
-        content : messageContentEl.val()
-      };
+    <!-- 阅读和回复站内信模态框 -->
+    <div class="modal modal-blur fade" id="index_message_reply_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="index_message_detail_title">站内信详情</h5>
+                    <input type="text" style="display: none;" id="index_message_detail_id">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                <p id="index_message_detail_content"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="display: none;" id="index_message_reply_div">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                <input type="text" style="display: none;" id="index_message_reply_receive_user_id">
+                                <label class="form-label" id="index_message_reply_receive_user_name">回复给: </label>
+                                <textarea class="form-control" rows="5" id="index_message_reply_receive_content" placeholder="请输入回复内容"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn me-auto" data-bs-dismiss="modal" id="index_message_reply_cancel">
+                        取消
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary ms-auto" id="btn_index_message_reply">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M8 9h8"></path>
+                            <path d="M8 13h6"></path>
+                            <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"></path>
+                        </svg>
+                        回复
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary ms-auto" data-bs-dismiss="modal" id="btn_index_send_message_reply" style="display: none;">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M10 14l11 -11"></path>
+                            <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                        </svg>
+                        发送
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </body> -->
+    <!-- 导入JS -->
+    <script src="./dist/js/jquery-3.6.3.min.js"></script>
+    <script src="./dist/js/tabler.min.js"></script>
+    <script src="./dist/js/theme.min.js"></script>
 
-      // 发送站内信请求 url = message/send, 成功与失败都调用cleanMessageForm()方法，清空输入框
-      $.ajax({
-        type: 'post',
-        url: 'message/send',
-        contentType: 'application/x-www-form-urlencoded',
-        data: postData,
-        // 回调
-        success: function (respData){
-          if(respData.code == 0){
-            //成功
-            cleanMessageForm()
-            //提示信息
-            $.toast({
-              heading: '成功',
-              text: respData.message,
-              icon: 'success'
-            });
-          }else{
-            //提示信息
-            $.toast({
-              heading: '警告',
-              text: respData.message,
-              icon: 'warning'
-            });
-          }
-        },
-        error: function (){
-          //提示信息
-          $.toast({
-            heading: '错误',
-            text: '访问出现问题,请与管理员联系.',
-            icon: 'error'
-          });
-        }
-      });
-    });
-
-    // 清空站内信输入区
-    function cleanMessageForm () {
-      $('#index_message_receive_user_id').val('');
-      $('#index_message_receive_user_name').html('');
-      $('#index_message_receive_content').val('');
-    }
-    // ============ 站内信取消接钮事件 ============
-    $('#index_message_receive_cancel').click(function () {
-      // 清空
-      cleanMessageForm();
-    });
-
-    // ============ 获取用户未读站内信数量 ============
-    // url = message/getUnreadCount
-    // 成功后，处理小红点是否显示 #index_nva_message_badge
-    function requestMessageUnreadCount () {
-      $.ajax({
-        type: 'get',
-        url: 'message/getUnreadCount',
-        // 回调
-        success: function (respData){
-          if(respData.code == 0){
-            // 成功,根据未读数来判断是否显示小红点
-            // 获取要操作的HTML的元素
-            let messageBadgeEl = $('#index_nva_message_badge');
-            if(respData.data > 0){
-              // 显示
-              messageBadgeEl.show();
-            }else{
-              // 隐藏
-              messageBadgeEl.hide();
-            }
-          }else{
-            //提示信息
-            $.toast({
-              heading: '警告',
-              text: respData.message,
-              icon: 'warning'
-            });
-          }
-        },
-        error: function (){
-          //提示信息
-          $.toast({
-            heading: '错误',
-            text: '访问出现问题,请与管理员联系.',
-            icon: 'error'
-          });
-        }
-      });
-    }
-
-    // 方法调用
-    requestMessageUnreadCount();
-    
-
-    // ============ 获取用户所有站内信 ============
-    // 成功后，调用buildMessageList() 方法构建站内信列表
-    function requestMessageList () {
-      $.ajax({
-        type: 'get',
-        url: 'message/getAll',
-        // 回调
-        success: function (respData){
-          if(respData.code == 0){
-            // 成功,构建站内信列表
-            buildMessageList(respData.data);
-          }else{
-            //提示信息
-            $.toast({
-              heading: '警告',
-              text: respData.message,
-              icon: 'warning'
-            });
-          }
-        },
-        error: function (){
-          //提示信息
-          $.toast({
-            heading: '错误',
-            text: '访问出现问题,请与管理员联系.',
-            icon: 'error'
-          });
-        }
-      });
-    }
-    // 方法调用
-    requestMessageList();
-
-    // ============ 处理站内信列表页面 ============
-    function buildMessageList(messageList) {
-      // 获取父标签
-      let messageDivEl = $('#index_div_message');
-      if (!messageList || messageList.length == 0) {
-        messageDivEl.html('<strong>没有站内信</strong>');
-        return;
-      }
-      // 获取站内信列表父标签
-      let messageListDivEl = $('#index_div_message_list');
-      messageListDivEl.html('');
-      // 遍历结果
-      messageList.forEach(messageItem => {
-        let itemHtml = ' <div class="list-group-item"> '
-          + ' <div class="row align-items-center"> '
-          + ' <div class="col-auto"><span class="status-dot d-block"></span></div> '
-          + ' <div class="col text-truncate"> '
-          + ' <a href="javascript:void(0);" class="text-body d-block index_message_title" data-bs-toggle="modal" data-bs-target="#index_message_reply_modal"> '
-          +  ' <span class="index_message_item_statue">[已读]</span> &nbsp; '
-          + ' <span>来自 <strong> '+ messageItem.postUser.nickname 
-          + ' </strong> 的消息</span></a> '
-          + ' <div class="d-block text-muted text-truncate mt-n1"> '
-          + messageItem.content
-          + ' </div> '
-          + ' </div> '
-          + ' <div class="col-auto"> '
-          + ' <a href="javascript:void(0);" class="list-group-item-actions" data-bs-toggle="modal" data-bs-target="#index_message_reply_modal"> '
-          + ' <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted bi bi-reply" width="24" height="24" '
-          + ' fill="currentColor" viewBox="0 0 16 16"> '
-          + ' <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/> '
-          + ' </svg> '
-          + ' </a> '
-          + ' </div> '
-          + ' </div> '
-          + ' </div>';
-        
-        // 转为jQuery对象
-        let messageItemEL = $(itemHtml);
-        // 设置状态 bg-green bg-red status-dot-animated
-        let statusDotEl = messageItemEL.find('.status-dot');
-        let statusDescEl = messageItemEL.find('.index_message_item_statue');
-        if (messageItem.state == 0) {
-          // 未读
-          statusDotEl.addClass('status-dot-animated bg-red');
-          statusDescEl.html('[未读]');
-        } else if (messageItem.state == 1) {
-          // 已读
-          statusDescEl.html('[已读]');
-        } else if (messageItem.state == 2) {
-          // 已回复
-          statusDotEl.addClass('bg-green');
-          statusDescEl.html('[已回复]');
-        }
-        // 绑定数据
-        messageItemEL.data('message', messageItem);
-        // 绑定点击事件
-        messageItemEL.find('.list-group-item-actions, .index_message_title').click(function () {
-          // 详情与回复页面数据
-          // 站内信Id
-          $('#index_message_detail_id').val(messageItem.id);
-          // 标题
-          $('#index_message_detail_title').html('收到来自 <strong>' + messageItem.postUser.nickname + '</strong> 的新消息');
-          // 内容
-          $('#index_message_detail_content').html(messageItem.content);
-          // 接收者Id
-          $('#index_message_reply_receive_user_id').val(messageItem.postUser.id);
-          // 接收者信息
-          $('#index_message_reply_receive_user_name').html('回复给: ' + messageItem.postUser.nickname);
-          // 复位回复区域
-          $('#index_message_reply_div').hide();
-          // 复位接钮显示 
-          $('#btn_index_message_reply').show();
-          $('#btn_index_send_message_reply').hide();
-
-
-          // 发送请求,更新状态为已读
-          if(messageItem.state == 0 && statusDotEl.hasClass('status-dot-animated bg-red')){
-            $.ajax({
-              type: 'post',
-              url: 'message/markRead',
-              contentType: 'application/x-www-form-urlencoded',
-              data: {id : messageItem.id},
-              // 成功回调
-              success: function (respData){
-                if(respData.code == 0){
-                  // 更新页面效果和messageItem.state
-                  statusDotEl.removeClass('status-dot-animated bg-red');
-                  // 修改未读为已读
-                  statusDescEl.html('[已读]');
-                  // 修改本地的对象状态属性
-                  messageItem.state = 1;
+    <script src="./dist/js/jquery.toast.js"></script>
+    <script src="./js/common.js"></script>
+    <!-- 编辑器 -->
+    <script src="./dist/editor.md/editormd.min.js"></script>
+    <script src="./dist/editor.md/lib/marked.min.js"></script>
+    <script src="./dist/editor.md/lib/prettify.min.js"></script>
+    <script src="./dist/libs/tinymce/tinymce.min.js" defer></script>
+    <script>
+        $(function () {
+            // ========================= 搜索功能 =========================
+            // 打开搜索弹窗的函数
+            function openSearchModal() {
+                $('#search_modal').modal('show');
+                // 如果顶部搜索框有值，同步到弹窗输入框
+                let currentKeyword = $('#searchKeyword').val();
+                if (currentKeyword) {
+                    $('#search_modal_input').val(currentKeyword);
                 }
-              }
+                setTimeout(function() {
+                    $('#search_modal_input').focus().select();
+                }, 200);
+            }
+            
+            // 点击搜索框打开搜索弹窗
+            $('#searchKeyword').click(function() {
+                openSearchModal();
             });
-          }
+            
+            // 点击放大镜图标也打开搜索弹窗
+            $('#searchIconBtn').click(function() {
+                openSearchModal();
+            });
+            
+            // 执行搜索的函数
+            function doSearch() {
+                let keyword = $('#search_modal_input').val().trim();
+                if (!keyword) {
+                    $.toast({ heading: '提示', text: '请输入搜索关键字', icon: 'warning' });
+                    return;
+                }
+                // 同步到顶部搜索框
+                $('#searchKeyword').val(keyword);
+                // 关闭弹窗
+                $('#search_modal').modal('hide');
+                
+                $.ajax({
+                    type: 'get',
+                    url: 'article/search',
+                    data: { keyword: keyword },
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            showSearchResults(respData.data, '搜索结果: ' + keyword);
+                            currentSearchResults = respData.data;
+                        } else {
+                            $.toast({ heading: '警告', text: respData.message, icon: 'warning' });
+                        }
+                    },
+                    error: function() {
+                        $.toast({ heading: '错误', text: '搜索失败，请与管理员联系.', icon: 'error' });
+                    }
+                });
+            }
+            
+            // 弹窗关闭时清空输入框和顶部搜索框
+            $('#search_modal').on('hidden.bs.modal', function() {
+                $('#search_modal_input').val('');
+                $('#searchKeyword').val('');
+            });
+            
+            // 点击搜索按钮
+            $('#btn_search_modal_submit').click(function() {
+                doSearch();
+            });
+            
+            // 监听搜索弹窗输入框的回车键
+            $('#search_modal_input').keypress(function(e) {
+                if (e.which == 13) {
+                    doSearch();
+                    return false;
+                }
+            });
+            
+            // 热门搜索标签点击
+            $('.hot-search-tag').click(function() {
+                let keyword = $(this).data('keyword');
+                $('#search_modal_input').val(keyword);
+                doSearch();
+            });
+
+            // 打开高级查询模态框
+            $('#btn_open_adv_search').click(function(e) {
+                e.preventDefault();
+                console.log('高级查询按钮被点击');
+                console.log('模态框元素:', document.getElementById('advanced_search_modal'));
+                try {
+                    $('#advanced_search_modal').modal('show');
+                    console.log('modal show 已调用');
+                } catch(err) {
+                    console.error('模态框打开失败:', err);
+                }
+            });
+
+            // ========================= 高级查询功能 =========================
+            // 存储当前搜索结果（用于"结果中查询"）
+            var currentSearchResults = [];
+
+            // 加载板块列表到高级查询下拉框
+            function loadBoardsToAdvSearchSelect() {
+                $.ajax({
+                    type: 'get',
+                    url: 'board/topList',
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let selectEl = $('#adv_search_board');
+                            respData.data.forEach(function(board) {
+                                selectEl.append('<option value="' + board.id + '">' + board.name + '</option>');
+                            });
+                        }
+                    }
+                });
+            }
+            // 页面加载时调用
+            loadBoardsToAdvSearchSelect();
+
+            // 更新结果中查询的提示信息
+            function updateResultSearchTip() {
+                let count = currentSearchResults.length;
+                $('#current_result_count').text(count);
+                if (count > 0) {
+                    $('#result_search_alert').removeClass('alert-warning').addClass('alert-info');
+                    $('#result_search_tip').text('当前有 ' + count + ' 条搜索结果可供筛选');
+                    $('#current_result_count_tip').text('(当前有 ' + count + ' 条结果)');
+                } else {
+                    $('#result_search_alert').removeClass('alert-info').addClass('alert-warning');
+                    $('#result_search_tip').text('当前没有搜索结果，请先进行一次查询');
+                    $('#current_result_count_tip').text('');
+                }
+            }
+
+            // 打开结果中查询弹窗时更新提示
+            $('#search_in_result_modal').on('show.bs.modal', function() {
+                updateResultSearchTip();
+            });
+
+            // ============================ 多条件交叉查询 ============================
+            $('#btn_multi_search').click(function() {
+                let title = $('#adv_search_title').val().trim();
+                let content = $('#adv_search_content').val().trim();
+                let author = $('#adv_search_author').val().trim();
+                let boardId = $('#adv_search_board').val();
+                let startDate = $('#adv_search_start_date').val();
+                let endDate = $('#adv_search_end_date').val();
+                let searchType = $('input[name="search_type"]:checked').val();
+
+                // 至少输入一个查询条件
+                if (!title && !content && !author && !boardId && !startDate && !endDate) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请至少输入一个查询条件',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                // 构造请求参数
+                let params = {
+                    title: title,
+                    content: content,
+                    author: author,
+                    boardId: boardId,
+                    startDate: startDate,
+                    endDate: endDate,
+                    searchType: searchType
+                };
+
+                // 发送请求
+                $.ajax({
+                    type: 'get',
+                    url: 'article/advancedSearch',
+                    data: params,
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let results = respData.data;
+                            // 保存当前搜索结果
+                            currentSearchResults = results;
+                            // 关闭弹窗
+                            $('#multi_condition_search_modal').modal('hide');
+                            // 显示结果
+                            showSearchResults(results, '多条件交叉查询结果');
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '查询失败，请稍后重试',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // 多条件查询重置按钮
+            $('#btn_multi_search_reset').click(function() {
+                $('#adv_search_title').val('');
+                $('#adv_search_content').val('');
+                $('#adv_search_author').val('');
+                $('#adv_search_board').val('');
+                $('#adv_search_start_date').val('');
+                $('#adv_search_end_date').val('');
+                $('#search_type_and').prop('checked', true);
+            });
+
+            // ============================ 模糊查询 ============================
+            $('#btn_fuzzy_search').click(function() {
+                let keyword = $('#fuzzy_search_keyword').val().trim();
+                if (!keyword) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请输入搜索关键字',
+                        icon: 'warning'
+                    });
+                    $('#fuzzy_search_keyword').focus();
+                    return;
+                }
+
+                // 获取搜索范围
+                let scopes = [];
+                $('input[name="fuzzy_scope"]:checked').each(function() {
+                    scopes.push($(this).val());
+                });
+
+                if (scopes.length === 0) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请至少选择一个搜索范围',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                // 构造请求参数
+                let params = {
+                    searchType: 'or'
+                };
+                if (scopes.includes('title')) params.title = keyword;
+                if (scopes.includes('content')) params.content = keyword;
+                if (scopes.includes('author')) params.author = keyword;
+
+                // 发送请求
+                $.ajax({
+                    type: 'get',
+                    url: 'article/advancedSearch',
+                    data: params,
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let results = respData.data;
+                            // 保存当前搜索结果
+                            currentSearchResults = results;
+                            // 关闭弹窗
+                            $('#fuzzy_search_modal').modal('hide');
+                            // 清空输入
+                            $('#fuzzy_search_keyword').val('');
+                            // 显示结果
+                            showSearchResults(results, '模糊查询结果 - "' + keyword + '"');
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '查询失败，请稍后重试',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // ============================ 结果中查询 ============================
+            $('#btn_search_in_result').click(function() {
+                let keyword = $('#result_search_keyword').val().trim();
+                if (!keyword) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请输入筛选关键字',
+                        icon: 'warning'
+                    });
+                    $('#result_search_keyword').focus();
+                    return;
+                }
+
+                if (currentSearchResults.length === 0) {
+                    $.toast({
+                        heading: '提示',
+                        text: '当前没有搜索结果，请先进行一次查询',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                // 获取筛选范围
+                let scopes = [];
+                $('input[name="result_scope"]:checked').each(function() {
+                    scopes.push($(this).val());
+                });
+
+                if (scopes.length === 0) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请至少选择一个筛选字段',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                // 在当前结果中筛选
+                let filteredResults = currentSearchResults.filter(function(article) {
+                    let keywordLower = keyword.toLowerCase();
+                    if (scopes.includes('title') && article.title && article.title.toLowerCase().includes(keywordLower)) {
+                        return true;
+                    }
+                    if (scopes.includes('content') && article.content && article.content.toLowerCase().includes(keywordLower)) {
+                        return true;
+                    }
+                    if (scopes.includes('author') && article.user && article.user.nickname && article.user.nickname.toLowerCase().includes(keywordLower)) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                // 更新当前搜索结果
+                currentSearchResults = filteredResults;
+                // 关闭弹窗
+                $('#search_in_result_modal').modal('hide');
+                // 清空输入
+                $('#result_search_keyword').val('');
+                // 显示结果
+                showSearchResults(filteredResults, '结果中查询 - "' + keyword + '"');
+            });
+
+            // ============================ 显示搜索结果 ============================
+            function showSearchResults(results, title) {
+                // 移除导航栏的激活状态
+                removeNavActive();
+
+                // 构建搜索结果页面 - 使用和article_list.html一样的样式
+                let searchPageHtml = '<style>'
+                    + '.search-page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 18px 0; color: white; margin-bottom: 15px; border-radius: 0 0 12px 12px; }'
+                    + '.search-page-title { font-size: 1.2rem; font-weight: 600; margin: 0; }'
+                    + '.search-page-subtitle { opacity: 0.9; margin-top: 4px; font-size: 0.8rem; }'
+                    + '.btn-continue { background: white; color: #667eea; border: none; padding: 6px 16px; border-radius: 16px; font-weight: 500; font-size: 0.8rem; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }'
+                    + '.btn-continue:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); color: #764ba2; }'
+                    + '.search-list-card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); overflow: hidden; }'
+                    + '.search-article-item { padding: 12px 16px; border-bottom: 1px solid #f5f5f5; transition: all 0.2s; cursor: pointer; }'
+                    + '.search-article-item:last-child { border-bottom: none; }'
+                    + '.search-article-item:hover { background: #fafbff; }'
+                    + '.search-article-inner { display: flex; gap: 12px; }'
+                    + '.search-article-avatar { width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; border: 2px solid #f0f0f0; transition: border-color 0.2s; }'
+                    + '.search-article-item:hover .search-article-avatar { border-color: #667eea; }'
+                    + '.search-article-content { flex: 1; min-width: 0; }'
+                    + '.search-article-title { font-size: 0.9rem; font-weight: 500; color: #333; margin-bottom: 6px; display: block; transition: color 0.2s; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }'
+                    + '.search-article-title:hover { color: #667eea; }'
+                    + '.search-article-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }'
+                    + '.search-meta-author { display: flex; align-items: center; gap: 4px; color: #667eea; font-weight: 500; font-size: 0.75rem; }'
+                    + '.search-meta-author svg { width: 12px; height: 12px; }'
+                    + '.search-meta-time { display: flex; align-items: center; gap: 4px; color: #aaa; font-size: 0.75rem; }'
+                    + '.search-meta-time svg { width: 12px; height: 12px; }'
+                    + '.search-article-stats { display: flex; gap: 8px; margin-left: auto; flex-shrink: 0; }'
+                    + '.search-stat-item { display: flex; align-items: center; gap: 3px; color: #aaa; font-size: 0.75rem; padding: 3px 8px; background: #f8f9fa; border-radius: 12px; transition: all 0.2s; }'
+                    + '.search-stat-item svg { width: 12px; height: 12px; }'
+                    + '.search-stat-item.views:hover { background: #e3f2fd; color: #1976d2; }'
+                    + '.search-stat-item.likes:hover { background: #fce4ec; color: #e91e63; }'
+                    + '.search-stat-item.replies:hover { background: #e8f5e9; color: #4caf50; }'
+                    + '.search-empty { text-align: center; padding: 40px 20px; color: #bbb; }'
+                    + '.search-empty svg { width: 50px; height: 50px; margin-bottom: 12px; opacity: 0.4; }'
+                    + '.search-empty h4 { color: #888; margin-bottom: 6px; font-size: 0.95rem; }'
+                    + '@media (max-width: 768px) { .search-article-stats { margin-left: 0; margin-top: 8px; } .search-article-inner { flex-wrap: wrap; } }'
+                    + '</style>'
+                    + '<div class="search-page-header">'
+                    + '<div class="container-xl">'
+                    + '<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">'
+                    + '<div>'
+                    + '<h1 class="search-page-title">' + title + '</h1>'
+                    + '<div class="search-page-subtitle">共找到 ' + results.length + ' 条结果</div>'
+                    + '</div>'
+                    + '<button class="btn btn-continue" id="btn_continue_search">'
+                    + '<svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>'
+                    + '继续查询'
+                    + '</button>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="container-xl">'
+                    + '<div class="search-list-card">'
+                    + '<div id="search-result-body"></div>'
+                    + '</div>'
+                    + '</div>';
+
+                // 替换内容区域
+                $('#bit-forum-content').html(searchPageHtml);
+
+                // 绑定继续查询按钮
+                $('#btn_continue_search').click(function() {
+                    $('#advanced_search_modal').modal('show');
+                });
+
+                // 显示搜索结果
+                if (results.length > 0) {
+                    buildSearchResultList(results);
+                    $.toast({
+                        heading: '成功',
+                        text: '查询到 ' + results.length + ' 条结果',
+                        icon: 'success'
+                    });
+                } else {
+                    $('#search-result-body').html('<div class="search-empty">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">'
+                        + '<path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path>'
+                        + '</svg>'
+                        + '<h4>没有找到相关帖子</h4>'
+                        + '<p>换个关键词试试吧</p>'
+                        + '</div>');
+                    $.toast({
+                        heading: '提示',
+                        text: '没有找到符合条件的帖子',
+                        icon: 'info'
+                    });
+                }
+            }
+
+            // 高级查询按钮点击事件（兼容旧代码）
+            $('#btn_adv_search').click(function() {
+                $('#btn_multi_search').click();
+            });
+
+            // 高级查询重置按钮（兼容旧代码）
+            $('#btn_adv_search_reset').click(function() {
+                $('#btn_multi_search_reset').click();
+            });
+
+
+            // ========================= 构建搜索结果列表 =========================
+            // 使用和article_list.html一样的样式
+            function buildSearchResultList(data) {
+                let defaultAvatar = 'image/avatar01.jpeg';
+                
+                data.forEach(article => {
+                    if (!article.user.avatarUrl) {
+                        article.user.avatarUrl = defaultAvatar;
+                    }
+                    
+                    let articleHtml = '<div class="search-article-item">'
+                        + '<div class="search-article-inner">'
+                        + '<span class="avatar search-article-avatar" style="background-image: url(' + article.user.avatarUrl + ')"></span>'
+                        + '<div class="search-article-content">'
+                        + '<a href="javascript:void(0);" class="search-article-title search_result_title">' + article.title + '</a>'
+                        + '<div class="search-article-meta">'
+                        + '<span class="search-meta-author">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'
+                        + article.user.nickname
+                        + '</span>'
+                        + '<span class="search-meta-time">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
+                        + article.createTime
+                        + '</span>'
+                        + '</div>'
+                        + '</div>'
+                        + '<div class="search-article-stats">'
+                        + '<span class="search-stat-item views">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
+                        + article.visitCount
+                        + '</span>'
+                        + '<span class="search-stat-item likes">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
+                        + article.likeCount
+                        + '</span>'
+                        + '<span class="search-stat-item replies">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>'
+                        + article.replyCount
+                        + '</span>'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>';
+                    
+                    let articleItem = $(articleHtml);
+                    let articleTitle = articleItem.find('.search_result_title');
+                    
+                    // 点击标题跳转详情
+                    articleTitle.click(function(e) {
+                        e.stopPropagation();
+                        currentArticle = article;
+                        removeNavActive();
+                        $('#bit-forum-content').load('details.html');
+                    });
+                    
+                    // 点击整行也可跳转
+                    articleItem.click(function() {
+                        currentArticle = article;
+                        removeNavActive();
+                        $('#bit-forum-content').load('details.html');
+                    });
+                    
+                    $('#search-result-body').append(articleItem);
+                });
+            }
+
+            // ============================ 处理管理中心点击事件 ===========================
+            $('#index_admin_center').click(function () {
+                // 打开管理中心模态框
+                $('#admin_board_modal').modal('show');
+            });
+
+            // ============================ 处理新增板块 ===========================
+            $('#btn_admin_create_board').click(function () {
+                // 获取板块名称
+                let boardNameEl = $('#admin_board_name');
+                if (!boardNameEl.val()) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请输入板块名称',
+                        icon: 'warning'
+                    });
+                    boardNameEl.focus();
+                    return;
+                }
+
+                // 发送请求
+                $.ajax({
+                    type: 'post',
+                    url: 'board/create',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { name: boardNameEl.val() },
+                    success: function (respData) {
+                        if (respData.code == 0) {
+                            $.toast({
+                                heading: '成功',
+                                text: '板块创建成功，刷新页面后生效',
+                                icon: 'success'
+                            });
+                            // 清空输入框
+                            boardNameEl.val('');
+                            // 关闭模态框
+                            $('#admin_create_board_modal').modal('hide');
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function () {
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+// ============================ 加载板块列表到下拉框 ===========================
+            function loadBoardsToSelect() {
+                $.ajax({
+                    type: 'get',
+                    url: 'board/topList',
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let selectEl = $('#admin_board_delete_select');
+                            selectEl.html('<option value="">请选择要删除的板块</option>');
+                            respData.data.forEach(board => {
+                                selectEl.append('<option value="' + board.id + '">' + board.name + '</option>');
+                            });
+                        }
+                    }
+                });
+            }
+
+            // ============================ 打开删除板块弹窗时加载板块列表 ===========================
+            $('#admin_delete_board_modal').on('show.bs.modal', function() {
+                loadBoardsToSelect();
+            });
+
+            // ============================ 处理删除板块 ===========================
+            $('#btn_admin_delete_board').click(function() {
+                let boardId = $('#admin_board_delete_select').val();
+                if (!boardId) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请选择要删除的板块',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                if (!confirm('确定要删除这个板块吗？')) {
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: 'board/delete',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { id: boardId },
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            $.toast({
+                                heading: '成功',
+                                text: '板块删除成功，刷新页面后生效',
+                                icon: 'success'
+                            });
+                            // 关闭模态框
+                            $('#admin_delete_board_modal').modal('hide');
+                            // 刷新下拉框
+                            loadBoardsToSelect();
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // ============================ 加载用户列表到下拉框 ===========================
+            function loadUsersToSelect() {
+                $.ajax({
+                    type: 'get',
+                    url: 'user/getAllUsers',
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let banSelectEl = $('#admin_ban_user_select');
+                            let unbanSelectEl = $('#admin_unban_user_select');
+                            banSelectEl.html('<option value="">请选择要禁言的用户</option>');
+                            unbanSelectEl.html('<option value="">请选择要解禁的用户</option>');
+                            
+                            respData.data.forEach(user => {
+                                // 跳过管理员
+                                if (user.isAdmin == 1) return;
+                                
+                                let displayText = user.nickname;
+                                if (user.state == 0) {
+                                    // 正常用户 -> 可以禁言
+                                    banSelectEl.append('<option value="' + user.id + '">' + displayText + '</option>');
+                                } else if (user.state == 1) {
+                                    // 已禁言用户 -> 可以解禁
+                                    unbanSelectEl.append('<option value="' + user.id + '">' + displayText + ' (已禁言)</option>');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            // ============================ 打开用户管理弹窗时加载用户列表 ===========================
+            $('#admin_user_manage_modal').on('show.bs.modal', function() {
+                loadUsersToSelect();
+            });
+
+            // ============================ 处理禁言用户 ===========================
+            $('#btn_admin_ban_user').click(function() {
+                let userId = $('#admin_ban_user_select').val();
+                let userName = $('#admin_ban_user_select option:selected').text();
+                
+                if (!userId) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请选择要禁言的用户',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                if (!confirm('确定要禁言用户 "' + userName + '" 吗？')) {
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: 'user/setStateById',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { userId: userId, state: 1 },
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            $.toast({
+                                heading: '成功',
+                                text: '用户 "' + userName + '" 已被禁言',
+                                icon: 'success'
+                            });
+                            // 刷新下拉框
+                            loadUsersToSelect();
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // ============================ 处理解禁用户 ===========================
+            $('#btn_admin_unban_user').click(function() {
+                let userId = $('#admin_unban_user_select').val();
+                let userName = $('#admin_unban_user_select option:selected').text().replace(' (已禁言)', '');
+                
+                if (!userId) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请选择要解禁的用户',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                if (!confirm('确定要解禁用户 "' + userName + '" 吗？')) {
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: 'user/setStateById',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { userId: userId, state: 0 },
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            $.toast({
+                                heading: '成功',
+                                text: '用户 "' + userName + '" 已被解禁',
+                                icon: 'success'
+                            });
+                            // 刷新下拉框
+                            loadUsersToSelect();
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // ============================ 加载帖子列表到下拉框 ===========================
+            function loadArticlesToSelect() {
+                $.ajax({
+                    type: 'get',
+                    url: 'article/getAllByBoardId',
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            let selectEl = $('#admin_article_delete_select');
+                            selectEl.html('<option value="">请选择要删除的帖子</option>');
+                            respData.data.forEach(article => {
+                                let authorName = article.user ? article.user.nickname : '未知';
+                                let displayText = '[' + authorName + '] ' + article.title;
+                                // 截断过长的标题
+                                if (displayText.length > 50) {
+                                    displayText = displayText.substring(0, 50) + '...';
+                                }
+                                selectEl.append('<option value="' + article.id + '">' + displayText + '</option>');
+                            });
+                        }
+                    }
+                });
+            }
+
+            // ============================ 打开删除帖子弹窗时加载帖子列表 ===========================
+            $('#admin_delete_article_modal').on('show.bs.modal', function() {
+                loadArticlesToSelect();
+            });
+
+            // ============================ 管理员删除帖子 ===========================
+            $('#btn_admin_delete_article').click(function() {
+                let articleId = $('#admin_article_delete_select').val();
+
+                if (!articleId) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请选择要删除的帖子',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+
+                if (!confirm('确定要删除这个帖子吗？删除后将无法恢复！')) {
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: 'article/delete',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { id: articleId },
+                    success: function(respData) {
+                        if (respData.code == 0) {
+                            $.toast({
+                                heading: '成功',
+                                text: '帖子删除成功',
+                                icon: 'success'
+                            });
+                            // 关闭模态框
+                            $('#admin_delete_article_modal').modal('hide');
+                            // 刷新下拉框
+                            loadArticlesToSelect();
+                        } else {
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function() {
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            //========================= 获取用户信息 =======================
+            // 成功后，手动设置用户信息
+            // $('#index_nav_avatar').css('background-image', 'url(' + user.avatarUrl + ')');
+            $.ajax({
+                //请求的方法
+                type: 'get',
+                //没有参数,表示获取当前登录用户的信息
+                url: 'user/info',
+                //成功回调
+                success: function (respData){
+                    //判断响应的状态码
+                    if(respData.code == 0 && respData.data){
+                        //设置页面用户的信息
+                        let user = respData.data;
+                        currentUserId = user.id; // 设置当前用户ID
+                        //判断用户头像是否有效
+                        if(!user.avatarUrl){
+                            //设置默认的头像地址
+                            user.avatarUrl = avatarUrl;
+                        }
+                        //设置页面上的头像
+                        $('#index_nav_avatar').css('background-image', 'url(' + user.avatarUrl + ')');
+                        //设置用户昵称
+                        $('#index_nav_nickname').html(user.nickname);
+                        //设置用户组
+                        let subName = user.isAdmin == 1 ? '管理员' : '普通用户';
+                        $('#index_nav_name_sub').html(subName);
+                        // 如果是管理员，显示管理中心入口
+                        if (user.isAdmin == 1) {
+                            $('#index_admin_center').show();
+                        }
+                        // 隐藏游客提示，显示用户菜单
+                        $('#guest_login_tip').hide();
+                        $('#user_dropdown_menu').show();
+                        // 已登录用户：加载站内信
+                        requestMessageUnreadCount();
+                        requestMessageList();
+
+                    }else{
+                        // 游客模式：未登录用户
+                        currentUserId = null;
+                        $('#index_nav_avatar').css('background-image', 'url(' + avatarUrl + ')');
+                        $('#index_nav_nickname').html('游客');
+                        $('#index_nav_name_sub').html('未登录');
+                        // 显示游客提示，隐藏用户菜单
+                        $('#guest_login_tip').show();
+                        $('#user_dropdown_menu').hide();
+                    }
+                },
+                //失败回调
+                error: function (){
+                    // 游客模式：请求失败时也当作游客处理
+                    currentUserId = null;
+                    $('#index_nav_avatar').css('background-image', 'url(' + avatarUrl + ')');
+                    $('#index_nav_nickname').html('游客');
+                    $('#index_nav_name_sub').html('未登录');
+                    $('#guest_login_tip').show();
+                    $('#user_dropdown_menu').hide();
+                }
+            });
+
+            // ========================= 获取版块信息 =======================
+            // 成功后，调用buildTopBoard()方法，构建版块列表
+            $.ajax({
+                type: 'get',
+                url: 'board/topList',
+                success: function (respData){
+                    if(respData.code == 0){
+                        //构建板块列表
+                        buildTopBoard(respData.data);
+                    }
+                    // 游客模式下不显示警告
+                },
+                error: function (){
+                    // 游客模式下不显示错误
+                }
+            });
+
+            //========================= 构造首页版块=======================
+            // 构造首页版块
+            function buildTopBoard(data) {
+                // 版块导航
+                let navBoardListEl = $('#topBoardList');
+                // 遍历版块
+                data.forEach(board => {
+                    // 构建版块
+                    let itemHtml = '<li class="nav-item">'
+                        + '<a class="nav-link" href="javascript:void(0);">'
+                        + '<span class="nav-link-icon d-md-none d-lg-inline-block">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point-filled" width="24"'
+                        + 'height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"'
+                        + 'stroke-linecap="round" stroke-linejoin="round">'
+                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>'
+                        + '<path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z"'
+                        + 'stroke-width="0" fill="currentColor"></path>'
+                        + '</svg>'
+                        + '</span>'
+                        + '<span class="nav-link-title">'
+                        + board.name
+                        + '</span>'
+                        + '</a>'
+                        + '</li>'
+                    // 为版块绑定当前版块数据对象以便后续获取
+                    let boardItem = $(itemHtml);
+                    // 把版块信息绑定到当前导航单元
+                    boardItem.data('board', board);
+                    console.log('data = ' + boardItem.data('board').name + ', id = ' + boardItem.data('board').id);
+                    // 处理点击事件
+                    boardItem.click(function () {
+                        // alert('data = ' + boardItem.data('board').name + ', id = ' + boardItem.data('board').id);
+                        // 激活效果
+                        changeNavActive(boardItem);
+                    });
+                    // 加入版块导航
+                    navBoardListEl.append(boardItem);
+                });
+            }
+
+            // ========================= 绑定导航栏中首页点击事件 =======================
+            $('#nav_board_index').click(function () {
+                // 激活效果
+                changeNavActive($(this));
+            });
+
+
+            // ========================= 起始页而加载首页帖子列表 =========================
+            buildArticleList();
+
+            // ========================= 加载统计数据 =========================
+            // 加载板块数量统计
+            $.ajax({
+                type: 'get',
+                url: 'board/topList',
+                success: function(respData) {
+                    if (respData.code == 0) {
+                        $('#stats_board_count').text(respData.data.length);
+                    }
+                }
+            });
+            // 简单显示默认统计（实际项目中可以从后端获取）
+            $('#stats_article_count').text('100+');
+            $('#stats_user_count').text('50+');
+
+            // ========================= Hero 区域用户信息同步 =========================
+            // 同步用户信息到 Hero 卡片
+            $.ajax({
+                type: 'get',
+                url: 'user/info',
+                success: function(respData) {
+                    if (respData.code == 0 && respData.data) {
+                        let user = respData.data;
+                        if (user.avatarUrl) {
+                            $('#hero_user_avatar').css('background-image', 'url(' + user.avatarUrl + ')');
+                        }
+                        $('#hero_user_nickname').text(user.nickname || '欢迎登录');
+                        $('#hero_user_role').text(user.isAdmin == 1 ? '管理员' : '普通用户');
+                    } else {
+                        // 游客模式
+                        $('#hero_user_nickname').text('欢迎登录');
+                        $('#hero_user_role').text('探索技术世界');
+                    }
+                }
+            });
+
+            // Hero 区域按钮事件
+            $('#hero_btn_profile').click(function() {
+                // 游客权限检查
+                if (!currentUserId) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请先登录后再查看我的帖子',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+                $('#index_user_profile').click();
+            });
+            $('#hero_btn_post').click(function() {
+                // 游客权限检查
+                if (!currentUserId) {
+                    $.toast({
+                        heading: '提示',
+                        text: '请先登录后再发布帖子',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+                // 在主内容区加载发帖页面
+                $('#bit-forum-content').load('article.html');
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            });
+
+            // ========================= 签到功能 =========================
+            $('#btn_checkin').click(function() {
+                // 模拟签到成功
+                $(this).prop('disabled', true).html('<svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>已签到');
+                $('#checkin_days').text(parseInt($('#checkin_days').text() || 0) + 1);
+                $('#checkin_total').text(parseInt($('#checkin_total').text() || 0) + 1);
+                $('#checkin_rank').text(Math.floor(Math.random() * 100) + 1);
+                $.toast({
+                    heading: '签到成功',
+                    text: '恭喜你，签到成功！继续保持哦~',
+                    icon: 'success'
+                });
+            });
+
+            // ========================= 页脚链接事件 =========================
+            $('#footer_link_home').click(function() {
+                $('#nav_board_index').click();
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            });
+            $('#footer_link_profile').click(function() {
+                // 游客权限检查
+                if (!currentUserId) {
+                    $.toast({ heading: '提示', text: '请先登录后再查看我的帖子', icon: 'warning' });
+                    return;
+                }
+                $('#index_user_profile').click();
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            });
+            $('#footer_link_settings').click(function() {
+                // 游客权限检查
+                if (!currentUserId) {
+                    $.toast({ heading: '提示', text: '请先登录后再访问个人中心', icon: 'warning' });
+                    return;
+                }
+                $('#index_user_settings').click();
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            });
+
+            // ========================= 动态加载页脚热门板块 =========================
+            function loadFooterBoards() {
+                $.ajax({
+                    type: 'get',
+                    url: 'board/topList',
+                    success: function(respData) {
+                        if (respData.code == 0 && respData.data.length > 0) {
+                            let footerBoardsEl = $('#footer_hot_boards');
+                            footerBoardsEl.html(''); // 清空静态内容
+                            // 只显示前4个板块
+                            let boards = respData.data.slice(0, 4);
+                            boards.forEach(function(board) {
+                                let li = $('<li><a href="javascript:void(0);">' + board.name + '</a></li>');
+                                // 绑定点击事件
+                                li.find('a').click(function() {
+                                    // 找到顶部导航栏中对应的板块并点击
+                                    $('#topBoardList .nav-item').each(function() {
+                                        let navBoard = $(this).data('board');
+                                        if (navBoard && navBoard.id == board.id) {
+                                            $(this).click();
+                                            // 滚动到页面顶部
+                                            $('html, body').animate({ scrollTop: 0 }, 300);
+                                            return false;
+                                        }
+                                    });
+                                });
+                                footerBoardsEl.append(li);
+                            });
+                        }
+                    }
+                });
+            }
+            // 页面加载时调用
+            loadFooterBoards();
+
+            // ============================ 处理个设置心点击事件 ===========================
+            $('#index_user_settings').click(function () {
+                console.log('加载设置中心页面');
+                removeNavActive();
+                $('#bit-forum-content').load('settings.html');
+            });
+
+            // ============================ 处理个人中心点击事件 ===========================
+            $('#index_user_profile').click(function () {
+                console.log('加载个人中心页面');
+                removeNavActive();
+                // 清空要查看的用户Id，表示要查看的是自己
+                profileUserId = undefined;
+                // 加载个人帖子列表
+                $('#bit-forum-content').load('profile.html');
+            });
+
+            // ============================ 处理退出登录点击事件 ===========================
+            // 成功后，跳转到sign-in.html
+            $('#index_user_logout').click(function () {
+                $.ajax({
+                    type: 'get',
+                    url: 'user/logout',
+                    complete: function (){
+                        //当前请求完成时,不论成功与失败都跳转到登录页面
+                        location.assign('/sign-in.html');
+                    }
+                });
+            });
+
+            // ============ 发送站内信 ==============
+            $('#btn_index_send_message').click(function() {
+                // 获取输入内容
+                let receiveUserIdEl = $('#index_message_receive_user_id');
+                let messageContentEl = $('#index_message_receive_content');
+                // 校验
+                if (!receiveUserIdEl.val()) {
+                    $.toast({
+                        heading: '警告',
+                        text: '出错了，请联系管理员',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+                if (!messageContentEl.val()) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请输入要发送的内容',
+                        icon: 'warning'
+                    });
+                    // 输入框
+                    messageContentEl.focus();
+                    return;
+                }
+
+                // 构造发送数据
+                let postData = {
+                    receiveUserId : receiveUserIdEl.val(),
+                    content : messageContentEl.val()
+                };
+
+                // 发送站内信请求 url = message/send, 成功与失败都调用cleanMessageForm()方法，清空输入框
+                $.ajax({
+                    type: 'post',
+                    url: 'message/send',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: postData,
+                    // 回调
+                    success: function (respData){
+                        if(respData.code == 0){
+                            //成功
+                            cleanMessageForm()
+                            //提示信息
+                            $.toast({
+                                heading: '成功',
+                                text: respData.message,
+                                icon: 'success'
+                            });
+                        }else{
+                            //提示信息
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function (){
+                        //提示信息
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            // 清空站内信输入区
+            function cleanMessageForm () {
+                $('#index_message_receive_user_id').val('');
+                $('#index_message_receive_user_name').html('');
+                $('#index_message_receive_content').val('');
+            }
+            // ============ 站内信取消接钮事件 ============
+            $('#index_message_receive_cancel').click(function () {
+                // 清空
+                cleanMessageForm();
+            });
+
+            // ============ 获取用户未读站内信数量 ============
+            // url = message/getUnreadCount
+            // 成功后，处理小红点是否显示 #index_nva_message_badge
+            function requestMessageUnreadCount () {
+                // 游客模式不请求
+                if (!currentUserId) {
+                    $('#index_nva_message_badge').hide();
+                    return;
+                }
+                $.ajax({
+                    type: 'get',
+                    url: 'message/getUnreadCount',
+                    // 回调
+                    success: function (respData){
+                        if(respData.code == 0){
+                            // 成功,根据未读数来判断是否显示小红点
+                            // 获取要操作的HTML的元素
+                            let messageBadgeEl = $('#index_nva_message_badge');
+                            if(respData.data > 0){
+                                // 显示
+                                messageBadgeEl.show();
+                            }else{
+                                // 隐藏
+                                messageBadgeEl.hide();
+                            }
+                        }
+                    },
+                    error: function (){
+                        // 游客模式下忽略错误
+                    }
+                });
+            }
+
+            // 方法定义（在用户登录成功后调用）
+            // requestMessageUnreadCount();
+
+
+            // ============ 获取用户所有站内信 ============
+            // 成功后，调用buildMessageList() 方法构建站内信列表
+            function requestMessageList () {
+                // 游客模式不请求
+                if (!currentUserId) {
+                    return;
+                }
+                $.ajax({
+                    type: 'get',
+                    url: 'message/getAll',
+                    // 回调
+                    success: function (respData){
+                        if(respData.code == 0){
+                            // 成功,构建站内信列表
+                            buildMessageList(respData.data);
+                        }
+                    },
+                    error: function (){
+                        // 游客模式下忽略错误
+                    }
+                });
+            }
+            // 方法定义（在用户登录成功后调用）
+            // requestMessageList();
+
+            // ============ 处理站内信列表页面 ============
+            function buildMessageList(messageList) {
+                // 获取父标签
+                let messageDivEl = $('#index_div_message');
+                if (!messageList || messageList.length == 0) {
+                    messageDivEl.html('<strong>没有站内信</strong>');
+                    return;
+                }
+                // 获取站内信列表父标签
+                let messageListDivEl = $('#index_div_message_list');
+                messageListDivEl.html('');
+                // 遍历结果
+                messageList.forEach(messageItem => {
+                    let itemHtml = ' <div class="list-group-item"> '
+                        + ' <div class="row align-items-center"> '
+                        + ' <div class="col-auto"><span class="status-dot d-block"></span></div> '
+                        + ' <div class="col text-truncate"> '
+                        + ' <a href="javascript:void(0);" class="text-body d-block index_message_title" data-bs-toggle="modal" data-bs-target="#index_message_reply_modal"> '
+                        +  ' <span class="index_message_item_statue">[已读]</span> &nbsp; '
+                        + ' <span>来自 <strong> '+ messageItem.postUser.nickname
+                        + ' </strong> 的消息</span></a> '
+                        + ' <div class="d-block text-muted text-truncate mt-n1"> '
+                        + messageItem.content
+                        + ' </div> '
+                        + ' </div> '
+                        + ' <div class="col-auto"> '
+                        + ' <a href="javascript:void(0);" class="list-group-item-actions" data-bs-toggle="modal" data-bs-target="#index_message_reply_modal"> '
+                        + ' <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted bi bi-reply" width="24" height="24" '
+                        + ' fill="currentColor" viewBox="0 0 16 16"> '
+                        + ' <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/> '
+                        + ' </svg> '
+                        + ' </a> '
+                        + ' </div> '
+                        + ' </div> '
+                        + ' </div>';
+
+                    // 转为jQuery对象
+                    let messageItemEL = $(itemHtml);
+                    // 设置状态 bg-green bg-red status-dot-animated
+                    let statusDotEl = messageItemEL.find('.status-dot');
+                    let statusDescEl = messageItemEL.find('.index_message_item_statue');
+                    if (messageItem.state == 0) {
+                        // 未读
+                        statusDotEl.addClass('status-dot-animated bg-red');
+                        statusDescEl.html('[未读]');
+                    } else if (messageItem.state == 1) {
+                        // 已读
+                        statusDescEl.html('[已读]');
+                    } else if (messageItem.state == 2) {
+                        // 已回复
+                        statusDotEl.addClass('bg-green');
+                        statusDescEl.html('[已回复]');
+                    }
+                    // 绑定数据
+                    messageItemEL.data('message', messageItem);
+                    // 绑定点击事件
+                    messageItemEL.find('.list-group-item-actions, .index_message_title').click(function () {
+                        // 详情与回复页面数据
+                        // 站内信Id
+                        $('#index_message_detail_id').val(messageItem.id);
+                        // 标题
+                        $('#index_message_detail_title').html('收到来自 <strong>' + messageItem.postUser.nickname + '</strong> 的新消息');
+                        // 内容
+                        $('#index_message_detail_content').html(messageItem.content);
+                        // 接收者Id
+                        $('#index_message_reply_receive_user_id').val(messageItem.postUser.id);
+                        // 接收者信息
+                        $('#index_message_reply_receive_user_name').html('回复给: ' + messageItem.postUser.nickname);
+                        // 复位回复区域
+                        $('#index_message_reply_div').hide();
+                        // 复位接钮显示
+                        $('#btn_index_message_reply').show();
+                        $('#btn_index_send_message_reply').hide();
+                        // 打开模态框
+                        $('#index_message_reply_modal').modal('show');
+
+
+                        // 发送请求,更新状态为已读
+                        if(messageItem.state == 0 && statusDotEl.hasClass('status-dot-animated bg-red')){
+                            $.ajax({
+                                type: 'post',
+                                url: 'message/markRead',
+                                contentType: 'application/x-www-form-urlencoded',
+                                data: {id : messageItem.id},
+                                // 成功回调
+                                success: function (respData){
+                                    if(respData.code == 0){
+                                        // 更新页面效果和messageItem.state
+                                        statusDotEl.removeClass('status-dot-animated bg-red');
+                                        // 修改未读为已读
+                                        statusDescEl.html('[已读]');
+                                        // 修改本地的对象状态属性
+                                        messageItem.state = 1;
+                                        // 刷新未读消息数
+                                        requestMessageUnreadCount();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    // 添加到列表
+                    messageListDivEl.append(messageItemEL);
+
+                });
+            }
+
+            // ============ 处理阅读和回复站内信 ============
+            // 清空站内信输入区
+            function cleanMessageReplyForm () {
+                // 详情区
+                $('#index_message_detail_id').val('');
+                $('#index_message_detail_title').html('');
+                $('#index_message_detail_content').html('');
+                // 回复区
+                $('#index_message_reply_receive_user_id').val('');
+                $('#index_message_reply_receive_user_name').html('');
+                $('#index_message_reply_receive_content').val('');
+                console.log(123);
+            }
+            // ============ 站内信取消接钮事件 ============
+            $('#index_message_reply_cancel').click(function () {
+                // 清空
+                cleanMessageReplyForm();
+            });
+
+            // 处理回复站内信按钮事件
+            $('#btn_index_message_reply').click(function () {
+                // 清空内容区
+                $('#index_message_reply_receive_content').val('');
+                // 显示回复区域
+                $('#index_message_reply_div').show();
+                // 隐藏回复按钮，显示发送按钮
+                $(this).hide();
+                $('#btn_index_send_message_reply').show();
+            });
+
+            // ============ 绑定发送按钮事件 ============
+            $('#btn_index_send_message_reply').click(function () {
+                // 校验用户输入
+                let replyReceiveContentEl = $('#index_message_reply_receive_content');
+                if (!replyReceiveContentEl.val()) {
+                    $.toast({
+                        heading: '警告',
+                        text: '请输入要回复的内容',
+                        icon: 'warning'
+                    });
+                    // 输入框
+                    replyReceiveContentEl.focus();
+                    return;
+                }
+
+                // 构造请求数据
+                let postData = {
+                    repliedId: $('#index_message_detail_id').val(),
+                    receiveUserId : $('#index_message_reply_receive_user_id').val(),
+                    content: replyReceiveContentEl.val()
+                };
+
+                // 发送请求 message/reply
+                // 回复成功后刷新未读标识和站内信列表
+                // requestMessageUnreadCount();
+                // requestMessageList();
+                // // 清空输入区
+                // cleanMessageReplyForm ();
+                $.ajax ({
+                    type: 'post',
+                    url: 'message/reply',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: postData,
+                    // 回调
+                    success: function (respData){
+                        if(respData.code == 0){
+                            // 回复成功后刷新未读标识和站内信列表
+                            requestMessageUnreadCount();
+                            requestMessageList();
+                            // 清空输入区
+                            cleanMessageReplyForm ();
+                            //提示信息
+                            $.toast({
+                                heading: '成功',
+                                text: respData.message,
+                                icon: 'success'
+                            });
+                        }else{
+                            //提示信息
+                            $.toast({
+                                heading: '警告',
+                                text: respData.message,
+                                icon: 'warning'
+                            });
+                        }
+                    },
+                    error: function (){
+                        //提示信息
+                        $.toast({
+                            heading: '错误',
+                            text: '访问出现问题,请与管理员联系.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
         });
-
-        // 添加到列表
-        messageListDivEl.append(messageItemEL);
-
-      });
-    }
-    
-    // ============ 处理阅读和回复站内信 ============
-    // 清空站内信输入区
-    function cleanMessageReplyForm () {
-      // 详情区
-      $('#index_message_detail_id').val('');
-      $('#index_message_detail_title').html('');
-      $('#index_message_detail_content').html('');
-      // 回复区
-      $('#index_message_reply_receive_user_id').val('');
-      $('#index_message_reply_receive_user_name').html('');
-      $('#index_message_reply_receive_content').val('');
-      console.log(123);
-    }
-    // ============ 站内信取消接钮事件 ============
-    $('#index_message_reply_cancel').click(function () {
-      // 清空
-      cleanMessageReplyForm();
-    });
-
-    // 处理回复站内信按钮事件
-    $('#btn_index_message_reply').click(function () {
-      // 清空内容区
-      $('#index_message_reply_receive_content').val('');
-      // 显示回复区域
-      $('#index_message_reply_div').show();
-      // 隐藏回复按钮，显示发送按钮
-      $(this).hide();
-      $('#btn_index_send_message_reply').show();
-    });
-
-    // ============ 绑定发送按钮事件 ============
-    $('#btn_index_send_message_reply').click(function () {
-      // 校验用户输入
-      let replyReceiveContentEl = $('#index_message_reply_receive_content');
-      if (!replyReceiveContentEl.val()) {
-        $.toast({
-          heading: '警告',
-          text: '请输入要回复的内容',
-          icon: 'warning'
-        });
-        // 输入框
-        replyReceiveContentEl.focus();
-        retrun;
-      }
-
-      // 构造请求数据
-      let postData = {
-        repliedId: $('#index_message_detail_id').val(),
-        receiveUserId : $('#index_message_reply_receive_user_id').val(),
-        content: replyReceiveContentEl.val()
-      };
-
-      // 发送请求 message/reply
-      // 回复成功后刷新未读标识和站内信列表
-      // requestMessageUnreadCount();
-      // requestMessageList();
-      // // 清空输入区
-      // cleanMessageReplyForm ();
-      $.ajax ({
-        type: 'post',
-        url: 'message/reply',
-        contentType: 'application/x-www-form-urlencoded',
-        data: postData,
-        // 回调
-        success: function (respData){
-          if(respData.code == 0){
-            // 回复成功后刷新未读标识和站内信列表
-            requestMessageUnreadCount();
-            requestMessageList();
-            // 清空输入区
-            cleanMessageReplyForm ();
-            //提示信息
-            $.toast({
-              heading: '成功',
-              text: respData.message,
-              icon: 'success'
-            });
-          }else{
-            //提示信息
-            $.toast({
-              heading: '警告',
-              text: respData.message,
-              icon: 'warning'
-            });
-          }
-        },
-        error: function (){
-          //提示信息
-          $.toast({
-            heading: '错误',
-            text: '访问出现问题,请与管理员联系.',
-            icon: 'error'
-          });
-        }
-      });
-    });
-  });
-</script>
-
+    </script>
+</body>
 </html>

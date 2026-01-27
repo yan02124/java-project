@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.forum.config.AppConfig;
+import com.example.forum.model.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -51,7 +57,7 @@ public class BoardController {
     }
 
     @ApiOperation("获取板块信息")
-    @GetMapping("getById")
+    @GetMapping("/getById")
     public AppResult<Board> getById(@ApiParam("板块Id") @RequestParam("id") @NonNull Long id) {
         //调用Service
         Board board = boardService.selectById(id);
@@ -65,4 +71,41 @@ public class BoardController {
         //返回结果
         return AppResult.success(board);
     }
+
+    @ApiOperation("新增板块")
+    @PostMapping("/create")
+    public AppResult create(HttpServletRequest request,
+                            @ApiParam("板块名称") @RequestParam("name") @NonNull String name) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 创建板块对象
+        Board board = new Board();
+        board.setName(name);
+        // 调用Service
+        boardService.create(board);
+        return AppResult.success("板块创建成功");
+    }
+
+    @ApiOperation("删除板块")
+    @PostMapping("/delete")
+    public AppResult delete(HttpServletRequest request,
+                            @ApiParam("板块Id") @RequestParam("id") @NonNull Long id) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 调用Service
+        boardService.deleteById(id);
+        return AppResult.success("板块删除成功");
+    }
+
+
 }

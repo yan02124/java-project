@@ -335,4 +335,42 @@ public class ArticleServiceImpl implements IArticleService {
             throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
         }
     }
+
+    @Override
+    public Article selectByNicknameAndTitle(String nickname, String title) {
+        if (StringUtil.isEmpty(nickname) || StringUtil.isEmpty(title)) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        return articleMapper.selectByNicknameAndTitle(nickname, title);
+    }
+
+    /**
+     * 根据关键字搜索帖子
+     * 搜索范围包括帖子标题和帖子内容
+     * @param keyword 搜索关键字
+     * @return 匹配的帖子列表
+     */
+    @Override
+    public List<Article> searchByKeyword(String keyword) {
+        // 非空校验：如果关键字为空，返回空列表
+        if (StringUtil.isEmpty(keyword)) {
+            return Collections.emptyList();
+        }
+        // 调用DAO层执行搜索
+        List<Article> articles = articleMapper.selectByKeyword(keyword);
+        // 返回搜索结果
+        return articles;
+    }
+
+    @Override
+    public List<Article> advancedSearch(String title, String content, String author,
+                                        Long boardId, String startDate, String endDate,
+                                        String searchType) {
+        return articleMapper.advancedSearch(title, content, author, boardId, 
+                                            startDate, endDate, searchType);
+    }
+
+
+
 }

@@ -54,9 +54,9 @@ public class SwaggerConfig {
     // 配置API基本信息
     private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("Bit论坛系统API")
-                .description("Bit论坛系统前后端分离API测试")
-                .contact(new Contact("Bit Tech", "https://edu.bitejiuyeke.com", "1598896550@qq.com"))
+                .title("论坛系统API")
+                .description("论坛系统前后端分离API测试")
+                .contact(new Contact("Bit Tech", "https://edu.kashidaxue.com", "yanc0214@163.com"))
                 .version("1.0")
                 .build();
         return apiInfo;

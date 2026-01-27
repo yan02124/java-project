@@ -20,6 +20,8 @@
     from t_board
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+
   <insert id="insert" parameterType="com.example.forum.model.Board" useGeneratedKeys="true" keyProperty="id">
     insert into t_board (id, name, articleCount, 
       sort, state, deleteState, 

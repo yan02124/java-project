@@ -18,4 +18,22 @@
         username = #{username,jdbcType=VARCHAR}
     </select>
 
+    <!-- 根据昵称查询用户 -->
+    <select id="selectByNickname" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where nickname = #{nickname,jdbcType=VARCHAR} and deleteState = 0
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where deleteState = 0
+        order by createTime desc
+    </select>
+
+
 </mapper>

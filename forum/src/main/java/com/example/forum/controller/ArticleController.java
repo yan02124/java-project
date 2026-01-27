@@ -100,14 +100,18 @@ public class ArticleController {
         //响应结果
         return AppResult.success(articles);
     }
+    
     @ApiOperation("根据帖子Id获取详情")
     @GetMapping("/details")
     public AppResult<Article> getDetails(HttpServletRequest request,
                                          @ApiParam("帖子Id") @RequestParam("id")
                                          @NonNull Long id){
-        //从 session 中获取当前登录的用户
+        //从 session 中获取当前登录的用户（游客模式下可能为空）
         HttpSession session = request.getSession(false);
-        User user = (User)session.getAttribute(AppConfig.USER_SESSION);
+        User user = null;
+        if(session != null){
+            user = (User)session.getAttribute(AppConfig.USER_SESSION);
+        }
         //调用Service,获取帖子详情
         Article article = articleService.selectDetailById(id);
         //判断结果是否为空
@@ -115,8 +119,8 @@ public class ArticleController {
             //返回错误信息
             return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);
         }
-        //判断当前用户是否为作者
-        if(user.getId() == article.getUserId()){
+        //判断当前用户是否为作者（游客模式下user为null，不是作者）
+        if(user != null && user.getId().equals(article.getUserId())){
             //标识为作者
             article.setOwn(true);
         }
@@ -198,8 +202,9 @@ public class ArticleController {
             //帖子已删除
             return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);
         }
-        //校验当前登录的用户是不是作者
-        if(user.getId() != article.getUserId()){
+        //校验当前登录的用户是不是作者或管理员
+        boolean isAdmin = user.getIsAdmin() != null && user.getIsAdmin() == 1;
+        if(!isAdmin && !user.getId().equals(article.getUserId())){
             return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
         }
         //调用Service
@@ -226,5 +231,71 @@ public class ArticleController {
         return AppResult.success(articles);
 
     }
+
+    @ApiOperation("管理员删除帖子")
+    @PostMapping("/adminDelete")
+    public AppResult adminDeleteById(HttpServletRequest request,
+                                    @ApiParam("用户昵称") @RequestParam("nickname") @NonNull String nickname,
+                                    @ApiParam("帖子标题") @RequestParam("title") @NonNull String title) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 根据昵称和标题查询帖子
+        Article article = articleService.selectByNicknameAndTitle(nickname, title);
+        // 校验帖子是否存在
+        if (article == null) {
+            return AppResult.failed("未找到该帖子，请检查昵称和标题是否正确");
+        }
+        // 调用Service删除
+        articleService.deleteById(article.getId());
+        log.info("管理员删除帖子成功. Article id = " + article.getId() + ", Admin id = " + user.getId());
+        return AppResult.success("帖子删除成功");
+    }
+
+    /**
+     * 搜索帖子接口
+     * 根据关键字搜索帖子标题和内容
+     * @param keyword 搜索关键字
+     * @return 匹配的帖子列表
+     */
+    @ApiOperation("搜索帖子")
+    @GetMapping("/search")
+    public AppResult<List<Article>> search(@ApiParam("搜索关键字") @RequestParam("keyword") String keyword) {
+        // 如果关键字为空或只有空格，返回空列表
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return AppResult.success(new ArrayList<>());
+        }
+        // 调用Service层执行搜索，去除关键字前后空格
+        List<Article> articles = articleService.searchByKeyword(keyword.trim());
+        // 如果结果为空，返回空列表
+        if (articles == null) {
+            articles = new ArrayList<>();
+        }
+        // 返回搜索结果
+        return AppResult.success(articles);
+    }
+
+    @ApiOperation("高级查询")
+    @GetMapping("/advancedSearch")
+    public AppResult<List<Article>> advancedSearch(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "author", required = false) String author,
+            @RequestParam(value = "boardId", required = false) Long boardId,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "searchType", defaultValue = "and") String searchType) {
+        
+        List<Article> articles = articleService.advancedSearch(title, content, author,
+                                                            boardId, startDate, endDate,
+                                                            searchType);
+        return AppResult.success(articles);
+    }
+
+
 }
 

@@ -10,4 +10,9 @@
         order by sort asc
         limit 0, #{num, jdbcType=INTEGER}
     </select>
+    
+    <!-- 查询最大的sort值 -->
+    <select id="selectMaxSort" resultType="java.lang.Integer">
+        select max(sort) from t_board where deleteState = 0
+    </select>
 </mapper>

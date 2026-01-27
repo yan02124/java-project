@@ -8,6 +8,8 @@ import com.example.forum.model.Board;
 import com.example.forum.services.IBoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import com.example.forum.utils.StringUtil;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -113,4 +115,56 @@ public class BoardServiceImpl implements IBoardService {
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
         }
     }
+
+    @Override
+    public void create(Board board) {
+        // 校验参数
+        if (board == null || StringUtil.isEmpty(board.getName())) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 设置默认值
+        board.setArticleCount(0);
+        board.setState((byte) 0);
+        board.setDeleteState((byte) 0);
+        // 获取当前最大的sort值，新板块排在最后
+        Integer maxSort = boardMapper.selectMaxSort();
+        board.setSort(maxSort == null ? 1 : maxSort + 1);
+        Date date = new Date();
+        board.setCreateTime(date);
+        board.setUpdateTime(date);
+        // 写入数据库
+        int row = boardMapper.insertSelective(board);
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+        log.info("新增板块成功, board name = " + board.getName());
+    }
+    @Override
+    public void deleteById(Long id) {
+        // 校验参数
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 查询板块是否存在
+        Board board = boardMapper.selectByPrimaryKey(id);
+        if (board == null || board.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_BOARD_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_NOT_EXISTS));
+        }
+        // 逻辑删除
+        Board updateBoard = new Board();
+        updateBoard.setId(id);
+        updateBoard.setDeleteState((byte) 1);
+        int row = boardMapper.updateByPrimaryKeySelective(updateBoard);
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+        log.info("删除板块成功, board id = " + id);
+    }
+
+
 }

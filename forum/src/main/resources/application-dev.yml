@@ -1,13 +1,26 @@
+# AI助手配置
+ai:
+  # 是否启用AI功能
+  enabled: true
+  # API Key
+  api-key: 8165418a-3698-4d1b-94e9-59cc99aff6a3
+  # API地址
+  api-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+
 spring:
   application:
     name: 论坛系统 # 项目名称
+  web:
+    resources:
+      static-locations: classpath:/static/, file:src/main/resources/static/
   output:
     ansi:
       enabled: ALWAYS # 配置输出的效果
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/forum_db?characterEncoding=utf8&useSSL=false  # 数据库连接串
+    url: jdbc:mysql://127.0.0.1:3306/forum_db?characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+  # 数据库连接串
     username: root
-    password: root
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver # 数据库连接驱动
   mvc:
     pathmatch:
@@ -15,6 +28,7 @@ spring:
   # JSON序列化配置
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss # 日期格式
+    time-zone: Asia/Shanghai # 时区设置为中国时区
     default-property-inclusion: NON_NULL # 不为null时序列化
 
 
@@ -27,7 +41,7 @@ logging:
     dateformat: yyyy-MM-dd HH:mm:ss #  日期的显示格式
   level:
     root: info # 日志的默认级别
-  #    com.bitejiuyeke.forum: debug # 指定包下的日志级别
+  #    com.forum: debug # 指定包下的日志级别
   file:
     path: /log/forum_001 # 生产环境的日志目录
 #    path: D:/log/bit_forum # 日志保存的路径
@@ -41,4 +55,4 @@ bit-forum:
   login:
     url: sign-in.html  # 未登录状况下强制跳转页面
   index: # 首页配置节点
-    board-num: 9  # 首页中显示的版块个数
+    board-num: 20  # 首页中显示的版块个数

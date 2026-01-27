@@ -19,6 +19,12 @@ public interface BoardMapper {
     int updateByPrimaryKey(Board row);
 
     List<Board> selectByNum (@Param("num") Integer num);
+    /**
+     * 查询最大的sort值
+     * @return 最大sort值
+     */
+    Integer selectMaxSort();
+
 
 
 }

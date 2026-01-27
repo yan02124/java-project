@@ -7,15 +7,14 @@ let profileUserId;  // 查看个人信息
 
 // ============================ 处理导航激活效果 ===========================
 function changeNavActive (boardItem) {
-    // 判断当前是否为激活状态
-    if (boardItem.hasClass('active') == false) {
-      let activeLiEl = $('#topBoardList>.active');
-      activeLiEl.removeClass('active');
-      boardItem.addClass('active');
-      console.log('修改');
-      // 请求版块中的帖子
-      buildArticleList();
-    }
+    // 移除所有激活状态
+    let activeLiEl = $('#topBoardList>.active');
+    activeLiEl.removeClass('active');
+    // 添加新的激活状态
+    boardItem.addClass('active');
+    console.log('切换板块');
+    // 请求版块中的帖子
+    buildArticleList();
 }
 
 // ============================ 删除导航激活效果 ===========================

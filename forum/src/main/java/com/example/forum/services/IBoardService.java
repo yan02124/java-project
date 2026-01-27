@@ -32,4 +32,16 @@ public interface IBoardService {
      */
     void subOneArticleCountById(Long id);
 
+    /**
+     * 新增板块（管理员）
+     * @param board 板块信息
+     */
+    void create(Board board);
+    /**
+     * 删除板块（管理员，逻辑删除）
+     * @param id 板块Id
+     */
+    void deleteById(Long id);
+
+
 }

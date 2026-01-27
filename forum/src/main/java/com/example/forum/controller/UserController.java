@@ -14,6 +14,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -116,12 +119,11 @@ public class UserController {
         if(id == null){
             //1.如果id为空,从session中获取当前登录的用户信息
             HttpSession session = request.getSession(false);
-            /*//判断session和用户信息是否有效
+            // 游客模式：session为空或用户未登录时返回空数据
             if(session == null || session.getAttribute(AppConfig.USER_SESSION) == null){
-                //表示用户没有登录,返回错误信息
-                return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
-            }*/
-            //
+                // 返回空数据，前端会识别为游客模式
+                return AppResult.success(null);
+            }
             user = (User)session.getAttribute(AppConfig.USER_SESSION);
         }else{
             //2.如果id不为空,从数据库中按Id查询出用户信息
@@ -222,4 +224,120 @@ public class UserController {
         //5.返回结果
         return AppResult.success();
     }
+
+    @ApiOperation("禁言/解禁用户")
+    @PostMapping("/setState")
+    public AppResult setState(HttpServletRequest request,
+                            @ApiParam("用户昵称") @RequestParam("nickname") @NonNull String nickname,
+                            @ApiParam("状态：0正常 1禁言") @RequestParam("state") @NonNull Byte state) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 不能禁言自己
+        if (user.getNickname().equals(nickname)) {
+            return AppResult.failed("不能禁言自己");
+        }
+        // 调用Service
+        userService.setStateByNickname(nickname, state);
+        String action = state == 1 ? "禁言" : "解禁";
+        return AppResult.success(action + "成功");
+    }
+
+    @ApiOperation("根据ID禁言/解禁用户")
+    @PostMapping("/setStateById")
+    public AppResult setStateById(HttpServletRequest request,
+                            @ApiParam("用户ID") @RequestParam("userId") @NonNull Long userId,
+                            @ApiParam("状态：0正常 1禁言") @RequestParam("state") @NonNull Byte state) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 不能禁言自己
+        if (user.getId().equals(userId)) {
+            return AppResult.failed("不能禁言自己");
+        }
+        // 查询目标用户
+        User targetUser = userService.selectById(userId);
+        if (targetUser == null) {
+            return AppResult.failed("用户不存在");
+        }
+        // 不能禁言管理员
+        if (targetUser.getIsAdmin() != null && targetUser.getIsAdmin() == 1) {
+            return AppResult.failed("不能禁言管理员");
+        }
+        // 调用Service
+        userService.setStateById(userId, state);
+        String action = state == 1 ? "禁言" : "解禁";
+        return AppResult.success(action + "成功");
+    }
+
+    @ApiOperation("获取所有用户列表")
+    @GetMapping("/getAllUsers")
+    public AppResult getAllUsers(HttpServletRequest request) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 校验是否为管理员
+        if (user.getIsAdmin() == null || user.getIsAdmin() != 1) {
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 调用Service获取所有用户
+        return AppResult.success(userService.selectAll());
+    }
+
+    @ApiOperation("上传头像")
+    @PostMapping("/uploadAvatar")
+    public AppResult uploadAvatar(HttpServletRequest request,
+                                @RequestParam("file") MultipartFile file) {
+        // 获取当前登录用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        
+        // 校验文件
+        if (file == null || file.isEmpty()) {
+            return AppResult.failed("请选择要上传的图片");
+        }
+        
+        try {
+            // 生成文件名
+            String originalFilename = file.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFilename = UUID.randomUUID().toString() + suffix;
+            
+            // 保存路径（需要配置）
+            String uploadPath = System.getProperty("user.dir") + "/src/main/resources/static/upload/avatar/";
+            File dir = new File(uploadPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            
+            // 保存文件
+            File destFile = new File(uploadPath + newFilename);
+            file.transferTo(destFile);
+            
+            // 更新用户头像URL
+            String avatarUrl = "/upload/avatar/" + newFilename;
+            User updateUser = new User();
+            updateUser.setId(user.getId());
+            updateUser.setAvatarUrl(avatarUrl);
+            userService.modifyInfo(updateUser);
+            
+            // 更新session中的用户信息
+            user.setAvatarUrl(avatarUrl);
+            session.setAttribute(AppConfig.USER_SESSION, user);
+            
+            return AppResult.success(avatarUrl);
+        } catch (Exception e) {
+            log.error("头像上传失败", e);
+            return AppResult.failed("头像上传失败");
+        }
+    }
+
 }

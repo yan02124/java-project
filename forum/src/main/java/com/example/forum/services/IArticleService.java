@@ -75,4 +75,29 @@ public interface IArticleService {
      * @param id 板块Id
      */
     void addOneReplyCountById(Long id);
+
+    /**
+     * 根据用户昵称和帖子标题查询帖子
+     * @param nickname 用户昵称
+     * @param title 帖子标题
+     * @return 帖子信息
+     */
+    Article selectByNicknameAndTitle(String nickname, String title);
+
+    /**
+     * 根据关键字搜索帖子
+     * 搜索范围包括帖子标题和帖子内容
+     * @param keyword 搜索关键字
+     * @return 匹配的帖子列表
+     */
+    List<Article> searchByKeyword(String keyword);
+
+    /**
+     * 高级查询
+     */
+    List<Article> advancedSearch(String title, String content, String author,
+                                Long boardId, String startDate, String endDate,
+                                String searchType);
+
+
 }

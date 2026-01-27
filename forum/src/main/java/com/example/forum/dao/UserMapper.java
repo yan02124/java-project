@@ -17,4 +17,17 @@ public interface UserMapper {
     int updateByPrimaryKey(User row);
 
     User selectByUserName (@Param("username") String username);
+    /**
+     * 根据昵称查询用户
+     * @param nickname 昵称
+     * @return 用户信息
+     */
+    User selectByNickname(@Param("nickname") String nickname);
+
+    /**
+     * 查询所有用户
+     * @return 用户列表
+     */
+    java.util.List<User> selectAll();
+
 }

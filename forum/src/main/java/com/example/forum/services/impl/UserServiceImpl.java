@@ -280,6 +280,14 @@ public class UserServiceImpl implements IUserService{
             // 更新标志位
             checkAttr = true;
         }
+        //12.校验头像
+        if(!StringUtil.isEmpty(user.getAvatarUrl())
+                && !user.getAvatarUrl().equals(existsUser.getAvatarUrl())){
+            // 设置头像
+            updateUser.setAvatarUrl(user.getAvatarUrl());
+            // 更新标志位
+            checkAttr = true;
+        }
         // 12.根据标志位来决定是否可以执行更新
         if(checkAttr == false){
             //打印日志
@@ -344,6 +352,89 @@ public class UserServiceImpl implements IUserService{
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
         }
 
+    }
+
+    @Override
+    public void setState(Long id, Byte state) {
+        // 校验参数
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 查询用户是否存在
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user == null || user.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_USER_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS));
+        }
+        // 更新状态
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setState(state);
+        int row = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+        String action = state == 1 ? "禁言" : "解禁";
+        log.info(action + "用户成功, user id = " + id);
+    }
+
+    @Override
+    public void setStateByNickname(String nickname, Byte state) {
+        // 校验参数
+        if (StringUtil.isEmpty(nickname)) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 根据昵称查询用户
+        User user = userMapper.selectByNickname(nickname);
+        if (user == null) {
+            log.warn(ResultCode.FAILED_USER_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS));
+        }
+        // 更新状态
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setState(state);
+        int row = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+        String action = state == 1 ? "禁言" : "解禁";
+        log.info(action + "用户成功, nickname = " + nickname);
+    }
+
+    @Override
+    public void setStateById(Long id, Byte state) {
+        // 校验参数
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 查询用户是否存在
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user == null || user.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_USER_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS));
+        }
+        // 更新状态
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setState(state);
+        int row = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+        String action = state == 1 ? "禁言" : "解禁";
+        log.info(action + "用户成功, user id = " + id);
+    }
+
+    @Override
+    public java.util.List<User> selectAll() {
+        return userMapper.selectAll();
     }
 
 
